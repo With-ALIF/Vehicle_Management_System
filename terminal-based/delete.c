@@ -61,7 +61,6 @@ void deleteVehicle()
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;
-                    saveVehiclesToFile();
                     printf("\nVehicle deleted successfully.\n");
                     break;
                 }
@@ -150,7 +149,6 @@ void deleteVehicle()
 
         if (deleted > 0)
         {
-            saveVehiclesToFile();
             printf("\n%d vehicle(s) deleted successfully.\n", deleted);
         }
         else

@@ -208,14 +208,20 @@ void updateVehicle()
 
             if (match)
             {
-                if (upd == 1)
+                if (upd == 1){
+                    printf("Enter New Brand Name: ");
                     scanf(" %[^\n]", vehicles[i].brand);
+                }
 
-                else if (upd == 2)
+                else if (upd == 2) {
+                    printf("Enter New Vehicle Type: ");
                     scanf(" %[^\n]", vehicles[i].type);
+                }
 
-                else if (upd == 3)
+                else if (upd == 3) {
+                    printf("Enter New Engine Capacity: ");
                     scanf("%d", &vehicles[i].engineCapacity);
+                }
 
                 found = 1;
             }
