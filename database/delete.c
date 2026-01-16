@@ -1,0 +1,144 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "vehicle.h"
+
+void deleteVehicle()
+{
+    char command[100];
+    int i, j;
+    int deleted = 0;
+
+    if (count == 0)
+    {
+        printf("\nNo vehicles available.\n");
+        return;
+    }
+
+    printf("\n========================================\n");
+    printf("         VEHICLE DELETE COMMANDS\n");
+    printf("========================================\n");
+    printf("Type commands using your own values\n\n");
+
+    printf("delete <ID>\n");
+    printf("Example: delete V102\n\n");
+
+    printf("delete older <YEAR>\n");
+    printf("Example: delete older 2018\n\n");
+
+    printf("delete engine < <CC>\n");
+    printf("Example: delete engine < 1500\n\n");
+
+    printf("delete engine > <CC>\n");
+    printf("Example: delete engine > 2000\n\n");
+
+    printf("delete brand <BRAND_NAME>\n");
+    printf("Example: delete brand Toyota\n\n");
+
+    printf("Enter command: ");
+    scanf(" %[^\n]", command);
+
+    if (strncmp(command, "delete ", 7) == 0 &&
+        strstr(command, "older") == NULL &&
+        strstr(command, "engine") == NULL &&
+        strstr(command, "brand") == NULL)
+    {
+        char id[20];
+        strcpy(id, command + 7);
+
+        for (i = 0; i < count; i++)
+        {
+            if (strcmp(vehicles[i].id, id) == 0)
+            {
+                for (j = i; j < count - 1; j++)
+                    vehicles[j] = vehicles[j + 1];
+                count--;
+                printf("\nVehicle deleted successfully.\n");
+                return;
+            }
+        }
+
+        printf("\nVehicle ID not found.\n");
+        return;
+    }
+
+    if (strncmp(command, "delete older ", 13) == 0)
+    {
+        int year = atoi(command + 13);
+
+        for (i = 0; i < count;)
+        {
+            if (vehicles[i].year < year)
+            {
+                for (j = i; j < count - 1; j++)
+                    vehicles[j] = vehicles[j + 1];
+                count--;
+                deleted++;
+            }
+            else
+                i++;
+        }
+    }
+    else if (strncmp(command, "delete engine < ", 16) == 0)
+    {
+        int cc = atoi(command + 16);
+
+        for (i = 0; i < count;)
+        {
+            if (vehicles[i].engineCapacity < cc)
+            {
+                for (j = i; j < count - 1; j++)
+                    vehicles[j] = vehicles[j + 1];
+                count--;
+                deleted++;
+            }
+            else
+                i++;
+        }
+    }
+    else if (strncmp(command, "delete engine > ", 16) == 0)
+    {
+        int cc = atoi(command + 16);
+
+        for (i = 0; i < count;)
+        {
+            if (vehicles[i].engineCapacity > cc)
+            {
+                for (j = i; j < count - 1; j++)
+                    vehicles[j] = vehicles[j + 1];
+                count--;
+                deleted++;
+            }
+            else
+                i++;
+        }
+    }
+    else if (strncmp(command, "delete brand ", 13) == 0)
+    {
+        char brand[50];
+        strcpy(brand, command + 13);
+
+        for (i = 0; i < count;)
+        {
+            if (strcmp(vehicles[i].brand, brand) == 0)
+            {
+                for (j = i; j < count - 1; j++)
+                    vehicles[j] = vehicles[j + 1];
+                count--;
+                deleted++;
+            }
+            else
+                i++;
+        }
+    }
+    else
+    {
+        printf("\nInvalid command.\n");
+        return;
+    }
+
+    if (deleted > 0)
+        printf("\n%d vehicle(s) deleted successfully.\n", deleted);
+    else
+        printf("\nNo matching vehicles found.\n");
+}
