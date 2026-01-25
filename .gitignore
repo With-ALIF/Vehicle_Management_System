@@ -1,0 +1,15 @@
+# VS Code
+.vscode/
+*.code-workspace
+
+# C / C++
+*.o
+*.out
+*.exe
+*.obj
+*.elf
+a.out
+
+# Build folders
+build/
+dist/
