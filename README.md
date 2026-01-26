@@ -24,9 +24,6 @@ The system manages different types of vehicles `(Car, Bus, Bike, Truck, etc)` an
 
 ## Repository Structure
 
-- Data-Based Version  
-  - Uses `.txt` files to store data for future use  
-
 - Terminal-Based Version  
   - Does not use any external databases, files, or advanced libraries
 
