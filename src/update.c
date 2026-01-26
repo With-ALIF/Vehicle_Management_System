@@ -46,19 +46,18 @@ void updateVehicle()
                 printf("Engine Capacity   : %d cc\n", vehicles[i].engineCapacity);
                 printf("Color             : %s\n", vehicles[i].color);
                 printf("Fuel Type         : %s\n", vehicles[i].fuelType);
-                printf("Seat Count        : %d\n", vehicles[i].seatCount);
+                printf("Gear / Seat / Route No / Battery Value: %d\n", vehicles[i].seatCount);
                 printf("------------------------------------\n");
 
                 printf("\nWhich information do you want to update?\n");
-                printf("1. Vehicle Type\n");
-                printf("2. Model Name\n");
-                printf("3. Brand\n");
-                printf("4. Manufacture Year\n");
-                printf("5. Engine Capacity\n");
-                printf("6. Color\n");
-                printf("7. Fuel Type\n");
-                printf("8. Seat Count\n");
-                printf("9. Update All Fields\n");
+                printf("1. Model Name\n");
+                printf("2. Brand\n");
+                printf("3. Manufacture Year\n");
+                printf("4. Engine Capacity\n");
+                printf("5. Color\n");
+                printf("6. Fuel Type\n");
+                printf("7. Gear / Seat / Route No / Battery Value\n");
+                printf("8. Update All Fields\n");
                 printf("0. Cancel\n");
                 printf("Enter your choice: ");
                 scanf("%d", &choice);
@@ -66,77 +65,107 @@ void updateVehicle()
                 if (choice == 0)
                     return;
 
-                switch (choice)
-                {
-                case 1:
-                    printf("Enter New Vehicle Type: ");
-                    scanf(" %[^\n]", vehicles[i].type);
-                    break;
-
-                case 2:
+              if (choice == 1) {
                     printf("Enter New Model Name: ");
-                    scanf(" %[^\n]", vehicles[i].model);
-                    break;
+                    scanf("%s", vehicles[i].model);
+                }
 
-                case 3:
+                else if (choice == 2) {
                     printf("Enter New Brand: ");
-                    scanf(" %[^\n]", vehicles[i].brand);
-                    break;
+                    scanf("%s", vehicles[i].brand);
+                }
 
-                case 4:
+                else if (choice == 3) {
                     printf("Enter New Manufacture Year: ");
                     scanf("%d", &vehicles[i].year);
-                    break;
+                }
 
-                case 5:
-                    printf("Enter New Engine Capacity: ");
+                else if (choice == 4) {
+                    printf("Enter New Engine Capacity (cc): ");
                     scanf("%d", &vehicles[i].engineCapacity);
-                    break;
+                }
 
-                case 6:
+                else if (choice == 5) {
                     printf("Enter New Color: ");
-                    scanf(" %[^\n]", vehicles[i].color);
-                    break;
+                    scanf("%s", vehicles[i].color);
+                }
 
-                case 7:
+                else if (choice == 6) {
                     printf("Enter New Fuel Type: ");
                     scanf(" %[^\n]", vehicles[i].fuelType);
-                    break;
+                }
 
-                case 8:
-                    printf("Enter New Seat Count: ");
-                    scanf("%d", &vehicles[i].seatCount);
-                    break;
+                else if (choice == 7) {
+                    if (strcmp(vehicles[i].type, "Bike") == 0 || strcmp(vehicles[i].type, "Car") == 0 || strcmp(vehicles[i].type, "Bus") == 0) {
+                        printf("Enter New Gear Count: ");
+                        scanf("%d", &vehicles[i].gearCount);
+                    }
+                    else if (strcmp(vehicles[i].type, "Car") == 0) {
+                        printf("Enter New Seat Count: ");
+                        scanf("%d", &vehicles[i].seatCount);
+                    }
+                    else if (strcmp(vehicles[i].type, "Bus") == 0) {
+                        printf("Enter New Seat Count: ");
+                        scanf("%d", &vehicles[i].seatCount);
+                    }
+                    else if (strcmp(vehicles[i].type, "Truck") == 0) {
+                        printf("Enter New Route Number: ");
+                        scanf("%s", vehicles[i].routeNumber);
+                    }
+                    else if (strcmp(vehicles[i].type, "Electric Vehicle") == 0) {
+                        printf("Enter New Battery Capacity (kWh): ");
+                        scanf("%d", &vehicles[i].batteryCapacity);
+                    }
+                }
 
-                case 9:
-                    printf("Enter New Vehicle Type      : ");
-                    scanf(" %[^\n]", vehicles[i].type);
+                else if (choice == 8) {
+                    printf("Enter New Model Name       : ");
+                    scanf("%s", vehicles[i].model); 
 
-                    printf("Enter New Model Name        : ");
-                    scanf(" %[^\n]", vehicles[i].model);
+                    printf("Enter New Brand Name       : ");
+                    scanf("%s", vehicles[i].brand);
 
-                    printf("Enter New Brand             : ");
-                    scanf(" %[^\n]", vehicles[i].brand);
-
-                    printf("Enter New Manufacture Year  : ");
+                    printf("Enter New Manufacture Year : ");
                     scanf("%d", &vehicles[i].year);
 
-                    printf("Enter New Engine Capacity   : ");
+                    printf("Enter New Engine Capacity (cc): ");
                     scanf("%d", &vehicles[i].engineCapacity);
 
-                    printf("Enter New Color             : ");
-                    scanf(" %[^\n]", vehicles[i].color);
+                    printf("Enter New Color            : ");
+                    scanf("%s", vehicles[i].color);
 
-                    printf("Enter New Fuel Type         : ");
+                    printf("Enter New Fuel Type        : ");
                     scanf(" %[^\n]", vehicles[i].fuelType);
 
-                    printf("Enter New Seat Count        : ");
-                    scanf("%d", &vehicles[i].seatCount);
-                    break;
+                    if (strcmp(vehicles[i].type, "Bike") == 0 || strcmp(vehicles[i].type, "Car") == 0 || strcmp(vehicles[i].type, "Bus") == 0) {
+                        printf("Enter New Gear Count: ");
+                        scanf("%d", &vehicles[i].gearCount);
+                    }
 
-                default:
-                    printf("\nInvalid choice\n");
-                    return;
+                    else if (strcmp(vehicles[i].type, "Car") == 0) {
+                        printf("Enter New Seat Count: ");
+                        scanf("%d", &vehicles[i].seatCount);
+                    }
+
+                    else if (strcmp(vehicles[i].type, "Bus") == 0) {
+                        printf("Enter New Seat Count: ");
+                        scanf("%d", &vehicles[i].seatCount);
+                    }
+
+                    else if (strcmp(vehicles[i].type, "Truck") == 0) {
+                        printf("Enter New Route Number: ");
+                        scanf("%s", vehicles[i].routeNumber);
+                    }
+
+                    else if (strcmp(vehicles[i].type, "Electric Vehicle") == 0) {
+                        printf("Enter New Battery Capacity (kWh): ");
+                        scanf("%d", &vehicles[i].batteryCapacity);
+                    }
+
+                    else {
+                        printf("Invalid choice!\n");
+                        return;
+                    }
                 }
 
                 printf("\n------------------------------------\n");
@@ -153,6 +182,8 @@ void updateVehicle()
     {
         int cond, upd, cc;
         char brand[30], type[20];
+        char newText[50];
+        int newValue;
 
         printf("\n------------------------------------\n");
         printf("        PARTIAL UPDATE MODE\n");
@@ -188,53 +219,67 @@ void updateVehicle()
         printf("1. Brand Name\n");
         printf("2. Vehicle Type\n");
         printf("3. Engine Capacity\n");
+        printf("4. Color\n");   
+        printf("5. Fuel Type\n");
         printf("0. Cancel\n");
         printf("Enter choice: ");
         scanf("%d", &upd);
 
-        if (upd == 0)
+        if (found) 
             return;
-
+    
+        if (upd == 1 || upd == 2 || upd == 4 || upd == 5) {
+            printf("Enter New Value: ");
+            scanf(" %[^\n]", newText);
+        }
+        else if (upd == 3) {
+            printf("Enter New Engine Capacity: ");
+            scanf("%d", &newValue);
+        }
+        
         for (i = 0; i < count; i++)
         {
             int match = 0;
 
             if (cond == 1 && strcmp(vehicles[i].brand, brand) == 0)
                 match = 1;
-            if (cond == 2 && strcmp(vehicles[i].type, type) == 0)
+
+            else if (cond == 2 && strcmp(vehicles[i].type, type) == 0)
                 match = 1;
-            if (cond == 3 && vehicles[i].engineCapacity > cc)
+
+            else if (cond == 3 && vehicles[i].engineCapacity > cc)
                 match = 1;
 
             if (match)
             {
-                if (upd == 1){
-                    printf("Enter New Brand Name: ");
-                    scanf(" %[^\n]", vehicles[i].brand);
-                }
+                if (upd == 1)
+                    strcpy(vehicles[i].brand, newText);
 
-                else if (upd == 2) {
-                    printf("Enter New Vehicle Type: ");
-                    scanf(" %[^\n]", vehicles[i].type);
-                }
+                else if (upd == 2)
+                    strcpy(vehicles[i].type, newText);
 
-                else if (upd == 3) {
-                    printf("Enter New Engine Capacity: ");
-                    scanf("%d", &vehicles[i].engineCapacity);
-                }
+                else if (upd == 3)
+                    vehicles[i].engineCapacity = newValue;
+
+                else if (upd == 4)
+                    strcpy(vehicles[i].color, newText);
+
+                else if (upd == 5)
+                    strcpy(vehicles[i].fuelType, newText);
 
                 found = 1;
             }
         }
 
-        if (found)
+    if (found)
         {
             printf("\n------------------------------------\n");
-            printf(" Vehicle Updated Successfully!\n");
+            printf(" Vehicles Updated Successfully!\n");
             printf("------------------------------------\n");
         }
-
-        else
-            printf("\nNo matching vehicles found.\n");
+    else
+    {
+        printf("\nNo matching vehicles found.\n");
     }
+}
 }

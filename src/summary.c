@@ -30,7 +30,7 @@ void summaryVehicle()
 
         if (choice == 1)
         {
-            int bike = 0, car = 0, bus = 0, truck = 0, other = 0;
+            int bike = 0, car = 0, bus = 0, truck = 0, electric = 0;
             int yearSum = 0;
 
             for (i = 0; i < count; i++)
@@ -39,7 +39,7 @@ void summaryVehicle()
                 else if (strcmp(vehicles[i].type, "Car") == 0) car++;
                 else if (strcmp(vehicles[i].type, "Bus") == 0) bus++;
                 else if (strcmp(vehicles[i].type, "Truck") == 0) truck++;
-                else other++;
+                else if (strcmp(vehicles[i].type, "Electric Vehicle") == 0) electric++;
 
                 yearSum += vehicles[i].year;
             }
@@ -48,39 +48,53 @@ void summaryVehicle()
             printf("          OVERALL SUMMARY\n");
             printf("-------------------------------------\n");
             printf("Total Vehicles : %d\n", count);
-            printf("Bike   : %d\n", bike);
-            printf("Car    : %d\n", car);
-            printf("Bus    : %d\n", bus);
-            printf("Truck : %d\n", truck);
-            printf("Other  : %d\n", other);
-            printf("Average Manufacturing Year : %.2f\n",
+            printf("Bike                        : %d\n", bike);
+            printf("Car                         : %d\n", car);
+            printf("Bus                         : %d\n", bus);
+            printf("Truck                       : %d\n", truck);
+            printf("Electric Vehicle            : %d\n", electric);
+            printf("Average Manufacturing Year  : %.2f\n",
                    (float)yearSum / count);
         }
 
         else if (choice == 2)
         {
-            int maxCC = vehicles[0].engineCapacity;
-            int minCC = vehicles[0].engineCapacity;
-            int ccSum = 0;
+            int maxCC = -1, minCC = -1;
+            int ccSum = 0, ccCount = 0;
 
             for (i = 0; i < count; i++)
             {
-                if (vehicles[i].engineCapacity > maxCC)
-                    maxCC = vehicles[i].engineCapacity;
+                if (strcmp(vehicles[i].type, "Electric Vehicle") == 0)
+                    continue;
 
-                if (vehicles[i].engineCapacity < minCC)
-                    minCC = vehicles[i].engineCapacity;
+                if (ccCount == 0)
+                {
+                    maxCC = vehicles[i].engineCapacity;
+                }
+                else
+                {
+                    if (vehicles[i].engineCapacity > maxCC)
+                        maxCC = vehicles[i].engineCapacity;
+                    if (vehicles[i].engineCapacity < minCC)
+                        minCC = vehicles[i].engineCapacity;
+                }
 
                 ccSum += vehicles[i].engineCapacity;
+                ccCount++;
             }
 
             printf("\n-------------------------------------\n");
             printf("       ENGINE CAPACITY REPORT\n");
             printf("-------------------------------------\n");
-            printf("Average Engine Capacity : %.2f cc\n",
-                   (float)ccSum / count);
-            printf("Highest Engine Capacity : %d cc\n", maxCC);
-            printf("Lowest Engine Capacity  : %d cc\n", minCC);
+           
+            if(ccCount == 0) {
+                printf("No vehicles with engine capacity available.\n");
+            } else {
+                printf("Maximum Engine Capacity : %d cc\n", maxCC);
+                printf("Minimum Engine Capacity : %d cc\n", minCC);
+                printf("Average Engine Capacity : %.2f cc\n",
+                       (float)ccSum / ccCount);
+            }
         }
 
         else if (choice == 3)
@@ -88,7 +102,7 @@ void summaryVehicle()
             int oldest = vehicles[0].year;
             int newest = vehicles[0].year;
 
-            for (i = 0; i < count; i++)
+            for (i = 1; i < count; i++)
             {
                 if (vehicles[i].year < oldest)
                     oldest = vehicles[i].year;
@@ -115,10 +129,14 @@ void summaryVehicle()
                 int printed = 0;
                 int brandCount = 0;
 
-                for (j = 0; j < i; j++)
+                for (j = 0; j < i; j++) {
                     if (strcmp(vehicles[j].brand, vehicles[i].brand) == 0)
+                      {  
                         printed = 1;
-
+                        break;
+                      }
+                }
+                
                 if (printed)
                     continue;
 

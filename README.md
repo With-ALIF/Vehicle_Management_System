@@ -4,7 +4,7 @@
 The Vehicle Management System is a menu-driven command-line application written in C.  
 All program logic is implemented across multiple files, with the code organized into multiple functions to ensure modularity and readability.
 
-The system manages different types of vehicles `(Car, Bus, Bike, Truck, etc)` and allows users to perform various operations such as adding, searching, updating, deleting, and analyzing vehicle records.
+The system manages different types of vehicles `(Car, Bus, Bike, Truck, electric vehicle etc)` and allows users to perform various operations such as adding, searching, updating, deleting, and analyzing vehicle records.
 
 ---
 

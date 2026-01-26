@@ -89,6 +89,7 @@ void deleteVehicle()
                     i++;
             }
         }
+
         else if (strncmp(command, "delete engine < ", 16) == 0)
         {
             int cc = atoi(command + 16);
@@ -106,6 +107,7 @@ void deleteVehicle()
                     i++;
             }
         }
+
         else if (strncmp(command, "delete engine > ", 16) == 0)
         {
             int cc = atoi(command + 16);
@@ -123,6 +125,7 @@ void deleteVehicle()
                     i++;
             }
         }
+        
         else if (strncmp(command, "delete brand ", 13) == 0)
         {
             char brand[50];

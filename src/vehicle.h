@@ -13,6 +13,10 @@ struct Vehicle {
     char color[20];
     char fuelType[20];
     int seatCount;
+    int gearCount;
+    int batteryCapacity;
+    int chargeTime;
+    char routeNumber[20];
 };
 
 extern struct Vehicle vehicles[MAX];

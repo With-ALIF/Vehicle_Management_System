@@ -41,10 +41,32 @@ void showVehicles()
                 printf("Model Name        : %s\n", vehicles[i].model);
                 printf("Brand             : %s\n", vehicles[i].brand);
                 printf("Manufacture Year  : %d\n", vehicles[i].year);
-                printf("Engine Capacity   : %d cc\n", vehicles[i].engineCapacity);
+
+                if (strcmp(vehicles[i].type, "Electric Vehicle") != 0)
+                    printf("Engine Capacity   : %d cc\n", vehicles[i].engineCapacity);
+
+                if (strcmp(vehicles[i].type, "Bike") == 0) {
+                    printf("Gear Count        : %d\n", vehicles[i].gearCount);
+                    printf("Fuel Type         : %s\n", vehicles[i].fuelType);
+                }
+                else if (strcmp(vehicles[i].type, "Car") == 0) {
+                    printf("Seat Count        : %d\n", vehicles[i].seatCount);
+                    printf("Fuel Type         : %s\n", vehicles[i].fuelType);
+                }
+                else if (strcmp(vehicles[i].type, "Bus") == 0) {
+                    printf("Seat Count        : %d\n", vehicles[i].seatCount);
+                    printf("Fuel Type         : %s\n", vehicles[i].fuelType);
+                }
+                else if (strcmp(vehicles[i].type, "Truck") == 0) {
+                    printf("Route Number      : %s\n", vehicles[i].routeNumber);
+                    printf("Fuel Type         : %s\n", vehicles[i].fuelType);
+                }
+                else if (strcmp(vehicles[i].type, "Electric Vehicle") == 0) {
+                    printf("Battery Capacity  : %d kWh\n", vehicles[i].batteryCapacity);
+                    printf("Charge Time       : %d hours\n", vehicles[i].chargeTime);
+                }
+
                 printf("Color             : %s\n", vehicles[i].color);
-                printf("Fuel Type         : %s\n", vehicles[i].fuelType);
-                printf("Seat Count        : %d\n", vehicles[i].seatCount);
                 printf("-------------------------------------\n");
             }
         }
@@ -58,38 +80,52 @@ void showVehicles()
             printf("\n----------- BIKES -----------\n");
             for (i = 0; i < count; i++)
                 if (strcmp(vehicles[i].type, "Bike") == 0)
-                    printf("%s | %s | %s | %dcc\n",
+                    printf("%s | %s | %s | %dcc | %d gears\n",
                            vehicles[i].id,
                            vehicles[i].model,
                            vehicles[i].brand,
-                           vehicles[i].engineCapacity);
+                           vehicles[i].engineCapacity,
+                           vehicles[i].gearCount);
 
             printf("\n----------- CARS ------------\n");
             for (i = 0; i < count; i++)
                 if (strcmp(vehicles[i].type, "Car") == 0)
-                    printf("%s | %s | %s | %dcc\n",
+                    printf("%s | %s | %s | %dcc | %d seats\n",
                            vehicles[i].id,
                            vehicles[i].model,
                            vehicles[i].brand,
-                           vehicles[i].engineCapacity);
+                           vehicles[i].engineCapacity,
+                           vehicles[i].seatCount);
 
             printf("\n----------- BUSES -----------\n");
             for (i = 0; i < count; i++)
                 if (strcmp(vehicles[i].type, "Bus") == 0)
-                    printf("%s | %s | %s | %dcc\n",
+                    printf("%s | %s | %s | %dcc | %d seats\n",
                            vehicles[i].id,
                            vehicles[i].model,
                            vehicles[i].brand,
-                           vehicles[i].engineCapacity);
+                           vehicles[i].engineCapacity,
+                           vehicles[i].seatCount);
 
             printf("\n----------- TRUCKS ----------\n");
             for (i = 0; i < count; i++)
                 if (strcmp(vehicles[i].type, "Truck") == 0)
-                    printf("%s | %s | %s | %dcc\n",
+                    printf("%s | %s | %s | %dcc | Route %s\n",
                            vehicles[i].id,
                            vehicles[i].model,
                            vehicles[i].brand,
-                           vehicles[i].engineCapacity);
+                           vehicles[i].engineCapacity,
+                           vehicles[i].routeNumber);
+
+            printf("\n----- ELECTRIC VEHICLES -----\n");
+            for (i = 0; i < count; i++)
+                if (strcmp(vehicles[i].type, "Electric Vehicle") == 0)
+                    printf("%s | %s | %s | %dkWh | %d hrs\n",
+                           vehicles[i].id,
+                           vehicles[i].model,
+                           vehicles[i].brand,
+                           vehicles[i].batteryCapacity,
+                           vehicles[i].chargeTime);
         }
 
         else
