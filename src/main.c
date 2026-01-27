@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include "vehicle.h"
 
+int lastOperation = UNDO_NONE;
+struct Vehicle undoVehicle;
+int undoIndex = -1;
+
 int main()
 {
     int choice;
@@ -18,7 +22,8 @@ int main()
         printf(" 6. Filter Vehicle\n");
         printf(" 7. Summary Vehicle\n");
         printf(" 8. Billing Vehicle\n");
-        printf(" 9. Exit\n");
+        printf(" 9. Undo Last Operation\n");
+        printf(" 0. Exit\n");
         printf("=====================================\n");
         printf("Enter your choice: ");
 
@@ -62,8 +67,12 @@ int main()
         case 8:
             billingVehicle();
             break;
-            
+        
         case 9:
+            undoLastOperation();
+            break;
+            
+        case 0:
             printf("\n=====================================\n");
             printf("     Exiting Vehicle Management...\n");
             printf("     Goodbye!\n");

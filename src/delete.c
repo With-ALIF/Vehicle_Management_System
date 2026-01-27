@@ -58,6 +58,10 @@ void deleteVehicle()
             {
                 if (strcmp(vehicles[i].id, id) == 0)
                 {
+                    undoVehicle = vehicles[i];
+                    undoIndex = i;
+                    lastOperation = UNDO_DELETE;
+
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;
@@ -80,6 +84,10 @@ void deleteVehicle()
             {
                 if (vehicles[i].year < year)
                 {
+                    undoVehicle = vehicles[i];
+                    undoIndex = i;
+                    lastOperation = UNDO_DELETE;
+
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;
@@ -98,6 +106,10 @@ void deleteVehicle()
             {
                 if (vehicles[i].engineCapacity < cc)
                 {
+                    undoVehicle = vehicles[i];
+                    undoIndex = i;
+                    lastOperation = UNDO_DELETE;
+
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;
@@ -116,6 +128,10 @@ void deleteVehicle()
             {
                 if (vehicles[i].engineCapacity > cc)
                 {
+                    undoVehicle = vehicles[i];
+                    undoIndex = i;
+                    lastOperation = UNDO_DELETE;
+
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;
@@ -135,6 +151,10 @@ void deleteVehicle()
             {
                 if (strcmp(vehicles[i].brand, brand) == 0)
                 {
+                    undoVehicle = vehicles[i];
+                    undoIndex = i;
+                    lastOperation = UNDO_DELETE;
+
                     for (j = i; j < count - 1; j++)
                         vehicles[j] = vehicles[j + 1];
                     count--;

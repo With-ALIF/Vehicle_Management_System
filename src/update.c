@@ -65,6 +65,10 @@ void updateVehicle()
                 if (choice == 0)
                     return;
 
+                undoVehicle = vehicles[i];
+                undoIndex = i;
+                lastOperation = UNDO_UPDATE;
+
               if (choice == 1) {
                     printf("Enter New Model Name: ");
                     scanf("%s", vehicles[i].model);
@@ -252,6 +256,12 @@ void updateVehicle()
 
             if (match)
             {
+
+                undoVehicle = vehicles[i];
+                undoIndex = i;
+                lastOperation = UNDO_UPDATE;
+
+                
                 if (upd == 1)
                     strcpy(vehicles[i].brand, newText);
 

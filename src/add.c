@@ -139,6 +139,9 @@ void addVehicle()
     scanf("%s", vehicles[count].color);
         count++;
 
+    lastOperation = UNDO_ADD;
+    undoIndex = count - 1;
+
         printf("\n-------------------------------------\n");
         printf(" Vehicle Added Successfully!\n");
         printf("-------------------------------------\n");
