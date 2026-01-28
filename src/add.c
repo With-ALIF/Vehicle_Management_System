@@ -11,6 +11,7 @@ void addVehicle()
     int i, choice;
     char cloneId[10];
     int found = 0;
+    int attempts = 0;
 
     printf("\n=====================================\n");
     printf("            ADD VEHICLE\n");
@@ -69,17 +70,38 @@ void addVehicle()
             printf("Enter Engine Capacity (cc): ");
             scanf("%d", &vehicles[count].engineCapacity);
 
+            if (vehicles[count].engineCapacity < 80 || vehicles[count].engineCapacity > 200) {
+                printf("Invalid engine capacity for Bike! Must be between 80 to 200!\n");
+                return;
+            } 
+
             printf("Enter Fuel Type           : ");
             scanf(" %[^\n]", vehicles[count].fuelType);
 
+            int attempts = 0;
+
+            while (attempts < 2) {
+            
             printf("Enter Gear Count          : ");
+    
             scanf("%d", &vehicles[count].gearCount);
 
-            if(vehicles[count].gearCount > 4) {
-                printf("Invalid gear count for Bike! Must be at least 4.\n");
-                return;
+            if (vehicles[count].gearCount <= 4) {
+            break;
+        
+        } else {
+            
+            printf("Invalid gear count for Bike! Must be at least 4.\n");
+            attempts++;
             }
         }
+
+        if (attempts == 2) {
+            printf("Too many invalid attempts. Aborting vehicle addition.\n");
+            return;
+        }
+ 
+        }  
 
         else if (strcmp(vehicles[count].type, "Car") == 0) {
             printf("Enter Engine Capacity (cc): ");
@@ -140,7 +162,6 @@ void addVehicle()
         count++;
 
     lastOperation = UNDO_ADD;
-    undoIndex = count - 1;
 
         printf("\n-------------------------------------\n");
         printf(" Vehicle Added Successfully!\n");

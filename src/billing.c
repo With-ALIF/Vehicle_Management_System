@@ -64,7 +64,7 @@ void billingVehicle()
             }
 
             if (currentYear - vehicles[i].year > 5)
-                charge -= 200;
+                charge += 200;
 
             if (charge < 0)
                 charge = 0;
