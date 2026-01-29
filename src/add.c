@@ -57,10 +57,10 @@ void addVehicle()
         }
 
         printf("Enter Vehicle Model       : ");
-        scanf("%s", vehicles[count].model); 
+        scanf(" %[^\n]", vehicles[count].model); 
 
         printf("Enter Vehicle Brand Name : ");
-        scanf("%s", vehicles[count].brand);
+        scanf(" %[^\n]", vehicles[count].brand);
 
         printf("Vehicle Manufacture Year : ");
         scanf("%d", &vehicles[count].year);
@@ -158,10 +158,11 @@ void addVehicle()
         }
 
     printf("Enter Vehicle Color       : ");
-    scanf("%s", vehicles[count].color);
+    scanf(" %[^\n]", vehicles[count].color);
         count++;
 
     lastOperation = UNDO_ADD;
+    undoIndex = count - 1;
 
         printf("\n-------------------------------------\n");
         printf(" Vehicle Added Successfully!\n");
@@ -172,7 +173,7 @@ void addVehicle()
     else if (choice == 2)
     {
         printf("\nEnter Vehicle ID to clone : ");
-        scanf("%s", cloneId);
+        scanf(" %[^\n]", cloneId);
 
         for (i = 0; i < count; i++)
         {
