@@ -67,19 +67,37 @@ void addVehicle()
 
 
         if(strcmp(vehicles[count].type, "Bike") == 0) {
+
+            int attempts = 0;
+
+            while (attempts < 2) {
+            
             printf("Enter Engine Capacity (cc): ");
+    
             scanf("%d", &vehicles[count].engineCapacity);
 
-            if (vehicles[count].engineCapacity < 80 || vehicles[count].engineCapacity > 200) {
+            if (vehicles[count].engineCapacity >= 80 && vehicles[count].engineCapacity <= 200) {
+        
+                break;
+    
+            } else {
                 printf("Invalid engine capacity for Bike! Must be between 80 to 200!\n");
+        
+                attempts++;
+                }
+            }
+
+            if (attempts == 2) {
+
+                printf("Too many invalid attempts. Aborting vehicle addition.\n");
                 return;
-            } 
+
+            }
 
             printf("Enter Fuel Type           : ");
             scanf(" %[^\n]", vehicles[count].fuelType);
 
-            int attempts = 0;
-
+            attempts = 0;
             while (attempts < 2) {
             
             printf("Enter Gear Count          : ");
