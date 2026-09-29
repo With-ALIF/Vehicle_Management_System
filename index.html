@@ -1,0 +1,1903 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Official documentation for the Vehicle Management System â€” a menu-driven console application written in C.">
+<title>Vehicle Management System â€” Official Documentation</title>
+<style>
+:root{
+  --bg:#f6f8fc;
+  --surface:#ffffff;
+  --surface-2:#f0f3f9;
+  --text:#111827;
+  --muted:#5b6474;
+  --border:#e2e8f2;
+  --primary:#2563eb;
+  --primary-2:#4f46e5;
+  --primary-soft:#eef2ff;
+  --accent:#0ea5e9;
+  --green:#16a34a;
+  --amber:#d97706;
+  --red:#dc2626;
+  --purple:#7c3aed;
+  --code-bg:#0b1220;
+  --code-text:#d6e2f5;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  --radius:14px;
+  --sidebar-w:278px;
+}
+[data-theme="dark"]{
+  --bg:#0a0f1a;
+  --surface:#0f1626;
+  --surface-2:#141d31;
+  --text:#e6ecf7;
+  --muted:#93a0b5;
+  --border:#1e2a42;
+  --primary:#60a5fa;
+  --primary-2:#818cf8;
+  --primary-soft:#152238;
+  --code-bg:#070c16;
+  --code-text:#cfe0f7;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- TOP BAR ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:64px;z-index:100;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;padding:0 22px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:16.5px;letter-spacing:-.2px}
+.logo{
+  width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;font-size:16px;font-weight:800;box-shadow:0 6px 16px rgba(37,99,235,.35)
+}
+.brand small{display:block;font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+.topbar .spacer{flex:1}
+.tbtn{
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text);
+  padding:7px 13px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+  transition:.18s;display:inline-flex;align-items:center;gap:7px
+}
+.tbtn:hover{border-color:var(--primary);color:var(--primary)}
+.hamburger{display:none}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:flex;padding-top:64px}
+.sidebar{
+  position:fixed;top:64px;bottom:0;left:0;width:var(--sidebar-w);
+  border-right:1px solid var(--border);background:var(--surface);
+  overflow-y:auto;padding:22px 14px 60px;z-index:90
+}
+.nav-group{margin-bottom:20px}
+.nav-title{
+  font-size:10.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--muted);padding:0 12px;margin-bottom:7px
+}
+.nav-link{
+  display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:9px;
+  color:var(--muted);font-size:13.6px;font-weight:550;transition:.15s;text-decoration:none
+}
+.nav-link:hover{background:var(--surface-2);color:var(--text);text-decoration:none}
+.nav-link.active{background:var(--primary-soft);color:var(--primary);font-weight:700}
+.nav-link .num{
+  font-size:10.5px;font-weight:800;background:var(--surface-2);color:var(--muted);
+  border:1px solid var(--border);border-radius:5px;min-width:20px;text-align:center;padding:0 3px
+}
+.nav-link.active .num{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0;padding:0 0 90px}
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:66px 46px 54px;
+  background:
+    radial-gradient(900px 380px at 85% -10%,rgba(79,70,229,.16),transparent 60%),
+    radial-gradient(700px 320px at 5% 0%,rgba(14,165,233,.14),transparent 60%),
+    var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;
+  letter-spacing:1.4px;text-transform:uppercase;color:var(--primary);
+  background:var(--primary-soft);border:1px solid color-mix(in srgb,var(--primary) 25%,transparent);
+  padding:6px 13px;border-radius:999px;margin-bottom:20px
+}
+.hero h1{font-size:clamp(32px,4.6vw,50px);line-height:1.12;letter-spacing:-1.4px;font-weight:800}
+.hero h1 span{background:linear-gradient(120deg,var(--primary),var(--accent) 60%,var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:17.5px;color:var(--muted);max-width:840px;margin-top:18px}
+.badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
+.badge{
+  font-size:12.3px;font-weight:700;padding:6px 13px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--muted)
+}
+.badge.b-primary{background:var(--primary-soft);color:var(--primary);border-color:color-mix(in srgb,var(--primary) 30%,transparent)}
+.badge.b-green{background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+.badge.b-amber{background:color-mix(in srgb,var(--amber) 12%,transparent);color:var(--amber);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;
+  font-size:14.5px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;text-decoration:none
+}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 8px 22px rgba(37,99,235,.32)}
+.btn-ghost{background:var(--surface-2);border-color:var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ---------- CONTENT ---------- */
+.content{padding:0 46px;max-width:1180px}
+section{padding-top:60px}
+.sec-head{margin-bottom:26px}
+.sec-kicker{
+  font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px
+}
+.sec-head h2{font-size:29px;letter-spacing:-.8px;font-weight:800;line-height:1.25}
+.sec-head p{color:var(--muted);margin-top:11px;font-size:15.8px;max-width:860px}
+.divider{height:1px;background:var(--border);margin-top:60px}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px;box-shadow:var(--shadow)
+}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+
+h3{font-size:18.5px;font-weight:750;letter-spacing:-.3px;margin-bottom:10px}
+h4{font-size:15.5px;font-weight:750;margin-bottom:8px}
+p.muted{color:var(--muted);font-size:15px}
+ul.list{list-style:none;display:grid;gap:9px;margin-top:6px}
+ul.list li{position:relative;padding-left:24px;font-size:14.8px;color:var(--muted)}
+ul.list li::before{
+  content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:3px;
+  background:linear-gradient(135deg,var(--primary),var(--accent))
+}
+ul.list li b,ul.list li strong{color:var(--text)}
+
+/* feature icon cards */
+.feat{display:flex;gap:15px;align-items:flex-start}
+.feat .ico{
+  min-width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:19px;
+  background:var(--primary-soft);border:1px solid color-mix(in srgb,var(--primary) 22%,transparent)
+}
+.feat h4{margin-bottom:4px}
+.feat p{font-size:14.2px;color:var(--muted)}
+
+/* stats */
+.stat{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;text-align:center;box-shadow:var(--shadow)
+}
+.stat .v{font-size:31px;font-weight:800;letter-spacing:-1.2px;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin-top:5px}
+
+/* ---------- CODE ---------- */
+pre{
+  background:var(--code-bg);color:var(--code-text);border-radius:12px;
+  padding:18px 20px;overflow-x:auto;font-family:Consolas,'SF Mono',Menlo,Monaco,monospace;
+  font-size:13.4px;line-height:1.68;border:1px solid #1b2740;position:relative
+}
+pre .cm{color:#6b8299}
+pre .kw{color:#7dd3fc}
+pre .st{color:#a5f3a1}
+pre .fn{color:#fcd34d}
+pre .nu{color:#f0abfc}
+code.inl{
+  background:var(--surface-2);border:1px solid var(--border);padding:1.5px 6px;border-radius:6px;
+  font-family:Consolas,monospace;font-size:13.2px;color:var(--primary);font-weight:600
+}
+.code-head{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#0f1a2e;border:1px solid #1b2740;border-bottom:none;
+  border-radius:12px 12px 0 0;padding:9px 16px;font-size:12px;color:#8fa4c0;
+  font-family:Consolas,monospace;font-weight:700;letter-spacing:.4px
+}
+.code-head + pre{border-radius:0 0 12px 12px}
+.copy{
+  background:#1b2740;border:1px solid #2a3a58;color:#a9bdd8;font-size:11.5px;
+  padding:3px 10px;border-radius:6px;cursor:pointer;font-weight:700;font-family:inherit
+}
+.copy:hover{background:#25334d;color:#fff}
+
+/* ---------- TABLES ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:14.3px;min-width:880px;table-layout:auto}
+thead th{
+  background:var(--surface-2);text-align:left;padding:16px 22px;font-size:11.6px;
+  text-transform:uppercase;letter-spacing:.85px;color:var(--muted);font-weight:800;
+  border-bottom:1px solid var(--border);white-space:nowrap
+}
+tbody td{padding:15px 22px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted);min-width:150px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:color-mix(in srgb,var(--primary-soft) 55%,transparent)}
+tbody td:first-child{color:var(--text);font-weight:650;min-width:140px;white-space:nowrap}
+tbody td:last-child{min-width:200px}
+.tag{
+  display:inline-block;font-size:11.4px;font-weight:800;padding:2.5px 9px;border-radius:999px;
+  background:var(--primary-soft);color:var(--primary);border:1px solid color-mix(in srgb,var(--primary) 26%,transparent)
+}
+.tag.g{background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+.tag.a{background:color-mix(in srgb,var(--amber) 12%,transparent);color:var(--amber);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.tag.r{background:color-mix(in srgb,var(--red) 11%,transparent);color:var(--red);border-color:color-mix(in srgb,var(--red) 30%,transparent)}
+.tag.p{background:color-mix(in srgb,var(--purple) 12%,transparent);color:var(--purple);border-color:color-mix(in srgb,var(--purple) 30%,transparent)}
+
+/* ---------- CALLOUTS ---------- */
+.callout{
+  display:flex;gap:14px;padding:17px 19px;border-radius:12px;font-size:14.6px;
+  border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow)
+}
+.callout .ci{font-size:18px;line-height:1.4}
+.callout b{display:block;margin-bottom:3px;color:var(--text);font-size:14.6px}
+.callout p{color:var(--muted)}
+.callout.info{border-left:4px solid var(--primary);background:color-mix(in srgb,var(--primary-soft) 70%,var(--surface))}
+.callout.warn{border-left:4px solid var(--amber);background:color-mix(in srgb,var(--amber) 8%,var(--surface))}
+.callout.ok{border-left:4px solid var(--green);background:color-mix(in srgb,var(--green) 8%,var(--surface))}
+
+/* ---------- TREE ---------- */
+.tree{
+  background:var(--code-bg);border:1px solid #1b2740;border-radius:12px;padding:22px 24px;
+  font-family:Consolas,monospace;font-size:13.6px;line-height:1.85;color:#c3d3ea;
+  white-space:pre;overflow-x:auto;
+}
+.tree .dir{color:#7dd3fc;font-weight:700}
+.tree .file{color:#e2e8f0}
+.tree .desc{color:#6b8299}
+
+/* ---------- FLOW ---------- */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.step{
+  background:var(--surface);border:1px solid var(--border);border-radius:11px;
+  padding:11px 16px;font-size:13.6px;font-weight:650;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:9px
+}
+.step .n{
+  width:23px;height:23px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;font-size:11.5px;font-weight:800;display:grid;place-items:center
+}
+.arrow{color:var(--muted);font-weight:800;font-size:16px}
+
+/* menu map */
+.menu-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px}
+.menu-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px;
+  box-shadow:var(--shadow);transition:.18s;display:flex;gap:12px;align-items:flex-start
+}
+.menu-item:hover{transform:translateY(-3px);border-color:var(--primary)}
+.menu-item .k{
+  min-width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff
+}
+.menu-item .k.zero{background:linear-gradient(135deg,#64748b,#475569)}
+.menu-item h5{font-size:14.4px;font-weight:750;margin-bottom:2px}
+.menu-item p{font-size:12.7px;color:var(--muted);line-height:1.55}
+
+/* terminal */
+.term{
+  background:#070c16;border:1px solid #1b2740;border-radius:13px;overflow:hidden;box-shadow:var(--shadow)
+}
+.term-bar{
+  background:#0f1a2e;padding:10px 15px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid #1b2740
+}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.term-bar span{margin-left:8px;font-size:12px;color:#7f93b0;font-family:Consolas,monospace;font-weight:700}
+.term-body{
+  padding:17px 19px;font-family:Consolas,monospace;font-size:13.1px;line-height:1.72;
+  color:#c8d7ee;white-space:pre-wrap;overflow-x:auto
+}
+.term-body .p{color:#7dd3fc}
+.term-body .ok{color:#4ade80}
+.term-body .wn{color:#fbbf24}
+.term-body .er{color:#f87171}
+.term-body .dim{color:#64748b}
+
+/* tabs */
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab{
+  padding:9px 17px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;
+  border:none;background:none;border-bottom:2.5px solid transparent;transition:.16s;font-family:inherit
+}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.panel{display:none;animation:fade .28s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+/* footer */
+.footer{
+  margin-top:76px;border-top:1px solid var(--border);background:var(--surface);
+  padding:40px 46px;color:var(--muted);font-size:14px
+}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:34px;max-width:1180px}
+.footer h6{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text);margin-bottom:13px;font-weight:800}
+.footer a{display:block;color:var(--muted);font-size:14px;margin-bottom:7px}
+.footer a:hover{color:var(--primary)}
+.footer-bottom{
+  max-width:1180px;margin-top:30px;padding-top:20px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13.2px
+}
+
+.to-top{
+  position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;border:none;
+  font-size:18px;cursor:pointer;box-shadow:0 10px 26px rgba(37,99,235,.4);
+  opacity:0;pointer-events:none;transition:.25s;z-index:95
+}
+.to-top.show{opacity:1;pointer-events:auto}
+.overlay{display:none}
+
+/* ---------- RESPONSIVE ---------- */
+html{-webkit-text-size-adjust:100%}
+table,pre,.tree,.term{max-width:100%}
+
+@media (max-width:1180px){
+  .content{max-width:none}
+}
+@media (max-width:1080px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:980px){
+  .sec-head h2{font-size:25px}
+  .hero{padding:52px 30px 44px}
+  .footer{padding:34px 30px}
+}
+@media (max-width:880px){
+  .hamburger{display:inline-flex}
+  .sidebar{
+    transform:translateX(-100%);transition:.28s;
+    box-shadow:0 0 60px rgba(0,0,0,.35);
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain
+  }
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .overlay{display:block;position:fixed;inset:64px 0 0 0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:.25s;z-index:85}
+  .overlay.on{opacity:1;pointer-events:auto}
+  .hero,.content,.footer{padding-left:22px;padding-right:22px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  section{padding-top:46px}
+  .divider{margin-top:46px}
+}
+@media (max-width:720px){
+  .topbar{padding:0 14px;gap:10px;height:60px}
+  .brand{font-size:14.5px;gap:9px}
+  .brand small{display:none}
+  .logo{width:30px;height:30px;font-size:14px}
+  .layout{padding-top:60px}
+  .sidebar{top:60px}
+  .overlay{inset:60px 0 0 0}
+  .tbtn{padding:6px 10px;font-size:12.5px}
+  .top-cta{display:none}
+  html{scroll-padding-top:72px}
+  .hero{padding:40px 18px 36px}
+  .hero h1{font-size:29px;letter-spacing:-.9px}
+  .hero p.lead{font-size:15.4px}
+  .hero-actions{gap:10px}
+  .btn{padding:10px 16px;font-size:13.6px;width:100%;justify-content:center}
+  .badges{gap:7px;margin-top:20px}
+  .badge{font-size:11.4px;padding:5px 10px}
+  .content{padding:0 18px}
+  .footer{padding:30px 18px}
+  .sec-head h2{font-size:22px;letter-spacing:-.5px}
+  .sec-head p{font-size:14.6px}
+  .card{padding:20px}
+  .stat{padding:16px 12px}
+  .stat .v{font-size:26px}
+  .footer-grid{grid-template-columns:1fr;gap:26px}
+  pre,.tree,.term-body{font-size:12.2px;line-height:1.62}
+  pre{padding:15px 14px}
+  .tree{padding:17px 15px}
+  .term-body{padding:15px 14px}
+  .code-head{font-size:10.8px;padding:8px 13px;gap:8px}
+  .code-head span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  table{font-size:13.2px;min-width:780px}
+  thead th{padding:14px 18px;font-size:10.8px}
+  tbody td{padding:13px 18px;min-width:135px}
+  tbody td:first-child{min-width:140px}
+  tbody td:last-child{min-width:180px}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tabs{
+    overflow-x:auto;flex-wrap:nowrap;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{white-space:nowrap;padding:9px 14px;font-size:13.4px}
+  .flow{gap:8px}
+  .step{padding:9px 13px;font-size:12.7px}
+  .arrow{font-size:14px}
+  .menu-map{grid-template-columns:1fr}
+  .callout{padding:15px 15px;font-size:14px;gap:11px}
+  ul.list li{font-size:14.2px;padding-left:22px}
+  .to-top{right:16px;bottom:16px;width:40px;height:40px;font-size:16px}
+}
+@media (max-width:420px){
+  .hero h1{font-size:25px}
+  .sec-head h2{font-size:20px}
+  .stat .v{font-size:23px}
+  pre,.tree,.term-body{font-size:11.4px}
+  .btn{font-size:13px}
+  table{min-width:720px}
+}
+@media (max-height:520px) and (orientation:landscape){
+  html{scroll-padding-top:66px}
+  .hero{padding:34px 22px 30px}
+  section{padding-top:38px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="tbtn hamburger" id="ham" aria-label="Menu">&#9776;</button>
+  <div class="brand">
+    <div class="logo">V</div>
+    <div>Vehicle Management System
+      <small>Official Documentation</small>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <button class="tbtn" id="theme">&#9680; Theme</button>
+  <a class="tbtn top-cta" href="#quickstart">&#9654; Get Started</a>
+</header>
+
+<div class="overlay" id="ovl"></div>
+
+<div class="layout">
+
+  <!-- ================= SIDEBAR ================= -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group">
+      <div class="nav-title">Getting Started</div>
+      <a class="nav-link" href="#overview"><span class="num">01</span> Overview</a>
+      <a class="nav-link" href="#objectives"><span class="num">02</span> Objectives &amp; Scope</a>
+      <a class="nav-link" href="#stack"><span class="num">03</span> Technology Stack</a>
+      <a class="nav-link" href="#quickstart"><span class="num">04</span> Quick Start</a>
+      <a class="nav-link" href="#structure"><span class="num">05</span> Project Structure</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-title">Architecture</div>
+      <a class="nav-link" href="#architecture"><span class="num">06</span> System Architecture</a>
+      <a class="nav-link" href="#data-model"><span class="num">07</span> Data Model</a>
+      <a class="nav-link" href="#globals"><span class="num">08</span> Global State</a>
+      <a class="nav-link" href="#modules"><span class="num">09</span> Module Reference</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-title">Features</div>
+      <a class="nav-link" href="#menu"><span class="num">10</span> Main Menu Map</a>
+      <a class="nav-link" href="#core"><span class="num">11</span> Core Operations</a>
+      <a class="nav-link" href="#advanced"><span class="num">12</span> Advanced Operations</a>
+      <a class="nav-link" href="#validation"><span class="num">13</span> Validation Rules</a>
+      <a class="nav-link" href="#billing"><span class="num">14</span> Billing Engine</a>
+      <a class="nav-link" href="#undo"><span class="num">15</span> Undo System</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-title">Reference</div>
+      <a class="nav-link" href="#api"><span class="num">16</span> Function API</a>
+      <a class="nav-link" href="#session"><span class="num">17</span> Sample Session</a>
+      <a class="nav-link" href="#complexity"><span class="num">18</span> Complexity Notes</a>
+      <a class="nav-link" href="#testing"><span class="num">19</span> Test Scenarios</a>
+      <a class="nav-link" href="#limits"><span class="num">20</span> Limitations</a>
+      <a class="nav-link" href="#roadmap"><span class="num">21</span> Roadmap</a>
+      <a class="nav-link" href="#contributing"><span class="num">22</span> Contributing</a>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="eyebrow">&#9670; Version 1.0 &middot; Console Edition</div>
+      <h1>Vehicle Management System<br><span>Complete Project Documentation</span></h1>
+      <p class="lead">
+        A menu-driven, modular command-line application written in pure C that manages a fleet of
+        vehicles &mdash; Bike, Car, Truck, Bus and Electric Vehicle &mdash; with full CRUD, multi-condition
+        filtering, statistical reporting, a tiered billing engine and single-level operation undo.
+      </p>
+      <div class="badges">
+        <span class="badge b-primary">Language: C (C99)</span>
+        <span class="badge b-primary">Compiler: GCC</span>
+        <span class="badge b-green">Zero Dependencies</span>
+        <span class="badge b-green">10 Source Modules</span>
+        <span class="badge b-amber">Menu-Driven CLI</span>
+        <span class="badge">In-Memory Storage</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#quickstart">&#9656; Compile &amp; Run</a>
+        <a class="btn btn-ghost" href="#architecture">&#9672; Explore Architecture</a>
+        <a class="btn btn-ghost" href="#session">&#10095; View Sample Session</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- ============ 01 OVERVIEW ============ -->
+      <section id="overview">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 01</div>
+          <h2>Project Overview</h2>
+          <p>
+            The Vehicle Management System (VMS) simulates a lightweight vehicle database using only
+            basic data structures &mdash; structures and static arrays &mdash; with complete manual handling of
+            records. It demonstrates how real-world fleet information systems work in a simplified,
+            dependency-free environment.
+          </p>
+        </div>
+
+        <div class="grid g3">
+          <div class="card feat">
+            <div class="ico">&#128663;</div>
+            <div>
+              <h4>Fleet Records</h4>
+              <p>Store up to 100 vehicle records, each carrying 13 typed attributes with auto-generated unique IDs.</p>
+            </div>
+          </div>
+          <div class="card feat">
+            <div class="ico">&#9881;&#65039;</div>
+            <div>
+              <h4>Modular Design</h4>
+              <p>Ten translation units split by responsibility, coordinated through a single shared header <code class="inl">vehicle.h</code>.</p>
+            </div>
+          </div>
+          <div class="card feat">
+            <div class="ico">&#128202;</div>
+            <div>
+              <h4>Analytics &amp; Billing</h4>
+              <p>Five analytical reports plus a rule-based service-charge calculator covering all five vehicle types.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid g4" style="margin-top:18px">
+          <div class="stat"><div class="v">11</div><div class="l">Source Files</div></div>
+          <div class="stat"><div class="v">100</div><div class="l">Max Records</div></div>
+          <div class="stat"><div class="v">5</div><div class="l">Vehicle Types</div></div>
+          <div class="stat"><div class="v">9</div><div class="l">Menu Modules</div></div>
+        </div>
+
+        <div class="callout info" style="margin-top:22px">
+          <div class="ci">&#128161;</div>
+          <div>
+            <b>Design Philosophy</b>
+            <p>No external database, no file I/O, no third-party libraries. Every byte of state lives in
+            program memory and every operation is performed manually &mdash; making the code an excellent
+            reference for structured programming, array manipulation and record-shifting algorithms.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 02 OBJECTIVES ============ -->
+      <section id="objectives">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 02</div>
+          <h2>Objectives &amp; Scope</h2>
+          <p>What this project set out to achieve, and the boundaries it operates within.</p>
+        </div>
+
+        <div class="grid g2">
+          <div class="card">
+            <h3>&#9989; Objectives</h3>
+            <ul class="list">
+              <li>Implement a <b>complete record management system</b> in C using structures and arrays.</li>
+              <li>Practice <b>modular programming</b> by splitting logic across focused source files.</li>
+              <li>Understand <b>manual data storage</b>: insertion, deletion, shifting, searching and traversal.</li>
+              <li>Enforce <b>robust input validation</b> with type-specific ranges and retry policies.</li>
+              <li>Provide <b>analytical reporting</b> and a deterministic <b>billing engine</b>.</li>
+              <li>Guarantee the program never terminates until the user explicitly selects <b>Exit</b>.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>&#127919; Scope Boundaries</h3>
+            <ul class="list">
+              <li><b>In scope:</b> In-memory CRUD, filtering, search, summary, billing, undo, cloning.</li>
+              <li><b>In scope:</b> Command-language bulk deletion and partial (multi-record) updates.</li>
+              <li><b>Out of scope:</b> Persistent storage (files/databases) &mdash; data is lost on exit.</li>
+              <li><b>Out of scope:</b> Graphical user interface, networking, multi-user concurrency.</li>
+              <li><b>Out of scope:</b> Authentication, access control or audit logging.</li>
+              <li><b>Constraint:</b> Fixed capacity of <code class="inl">MAX = 100</code> records.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout warn" style="margin-top:20px">
+          <div class="ci">&#128204;</div>
+          <div>
+            <b>Problem Statement</b>
+            <p>Design and implement a Vehicle Management System that lets users store information about
+            different types of vehicles and perform structured operations &mdash; add, list, search, update and
+            delete &mdash; while continuing to function correctly regardless of how many operations are performed,
+            until the user explicitly exits.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 03 STACK ============ -->
+      <section id="stack">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 03</div>
+          <h2>Technology Stack</h2>
+          <p>A deliberately minimal toolchain &mdash; the entire application builds with a single compiler invocation.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Layer</th><th>Choice</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Programming Language</td><td><span class="tag">C (C99/C11)</span></td><td>Structures, arrays, <code class="inl">stdio</code>/<code class="inl">string</code>/<code class="inl">stdlib</code>/<code class="inl">ctype</code> only.</td></tr>
+              <tr><td>Compiler</td><td><span class="tag">GCC</span></td><td>Any conforming C compiler (MinGW, Clang, TDM-GCC) works.</td></tr>
+              <tr><td>Build System</td><td><span class="tag a">Direct gcc invocation</span></td><td>No Makefile, CMake or dependency manager required.</td></tr>
+              <tr><td>Editor / IDE</td><td><span class="tag p">Visual Studio Code</span></td><td>Recommended with the <code class="inl">C/C++</code> extension pack.</td></tr>
+              <tr><td>Runtime</td><td><span class="tag g">Console / Terminal</span></td><td>Windows CMD &middot; PowerShell &middot; Linux Bash &middot; macOS Terminal.</td></tr>
+              <tr><td>Data Storage</td><td><span class="tag r">In-memory only</span></td><td>Static array of structures; no file or DB persistence.</td></tr>
+              <tr><td>External Libraries</td><td><span class="tag g">None</span></td><td>Standard library only &mdash; zero third-party dependencies.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 04 QUICK START ============ -->
+      <section id="quickstart">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 04</div>
+          <h2>Quick Start</h2>
+          <p>Compile and launch the application in three commands.</p>
+        </div>
+
+        <div class="code-head"><span>WINDOWS / POWERSHELL</span><button class="copy">Copy</button></div>
+<pre><code><span class="cm"># 1 - Enter the source directory</span>
+cd ./src
+
+<span class="cm"># 2 - Compile every translation unit into one executable</span>
+gcc *.c -o vehicle
+
+<span class="cm"># 3 - Run it</span>
+.\vehicle.exe        <span class="cm"># Windows</span>
+./vehicle            <span class="cm"># Linux / macOS</span></code></pre>
+
+        <div class="code-head" style="margin-top:20px"><span>RECOMMENDED STRICT BUILD</span><button class="copy">Copy</button></div>
+<pre><code>gcc -std=c99 -Wall -Wextra -O2 src/*.c -o vehicle</code></pre>
+
+        <div class="grid g3" style="margin-top:22px">
+          <div class="card">
+            <h4>&#129517; Prerequisites</h4>
+            <p class="muted">GCC 5.0+ installed and available on <code class="inl">PATH</code>. Roughly 50 MB of disk space for the toolchain.</p>
+          </div>
+          <div class="card">
+            <h4>&#128193; Expected Output</h4>
+            <p class="muted">A single native executable named <code class="inl">vehicle</code> (<code class="inl">vehicle.exe</code> on Windows) is produced in the working directory.</p>
+          </div>
+          <div class="card">
+            <h4>&#9888;&#65039; Clean Build</h4>
+            <p class="muted">Delete any stale <code class="inl">vehicle</code> binary before recompiling to avoid "file in use" errors on Windows.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 05 STRUCTURE ============ -->
+      <section id="structure">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 05</div>
+          <h2>Project Structure</h2>
+          <p>Repository layout with the responsibility of every file.</p>
+        </div>
+
+        <div class="tree"><span class="dir">Vehicle_Management_System/</span>
+â”œâ”€â”€ <span class="file">README.md</span>            <span class="desc"># Project summary &amp; build instructions</span>
+â”œâ”€â”€ <span class="file">details.md</span>           <span class="desc"># Full specification &amp; requirement sheet</span>
+â”œâ”€â”€ <span class="file">index.html</span>           <span class="desc"># This documentation</span>
+â”œâ”€â”€ <span class="file">.gitignore</span>           <span class="desc"># Build artifacts excluded from VCS</span>
+â””â”€â”€ <span class="dir">src/</span>
+    â”œâ”€â”€ <span class="file">vehicle.h</span>       <span class="desc"># Shared struct, globals &amp; prototypes</span>
+    â”œâ”€â”€ <span class="file">main.c</span>          <span class="desc"># Entry point, menu loop &amp; dispatch</span>
+    â”œâ”€â”€ <span class="file">add.c</span>           <span class="desc"># Insert + clone vehicle</span>
+    â”œâ”€â”€ <span class="file">show.c</span>          <span class="desc"># List / group / EV-only display</span>
+    â”œâ”€â”€ <span class="file">search.c</span>        <span class="desc"># 6-way search engine</span>
+    â”œâ”€â”€ <span class="file">update.c</span>        <span class="desc"># Single &amp; partial update</span>
+    â”œâ”€â”€ <span class="file">delete.c</span>        <span class="desc"># Command-based single/bulk delete</span>
+    â”œâ”€â”€ <span class="file">filter.c</span>        <span class="desc"># Multi-condition filtering</span>
+    â”œâ”€â”€ <span class="file">summary.c</span>       <span class="desc"># 5 statistical reports</span>
+    â”œâ”€â”€ <span class="file">billing.c</span>       <span class="desc"># Tiered service-charge calculator</span>
+    â””â”€â”€ <span class="file">undo.c</span>          <span class="desc"># Single-level operation rollback</span></div>
+
+        <div class="table-wrap" style="margin-top:22px">
+          <table>
+            <thead><tr><th>File</th><th>Lines</th><th>Primary Function</th><th>Depends On</th></tr></thead>
+            <tbody>
+              <tr><td>vehicle.h</td><td>50</td><td>Type, constant &amp; prototype declarations</td><td>&mdash;</td></tr>
+              <tr><td>main.c</td><td>86</td><td><code class="inl">main()</code> &mdash; infinite menu loop + switch dispatch</td><td>vehicle.h</td></tr>
+              <tr><td>add.c</td><td>329</td><td><code class="inl">addVehicle()</code> &mdash; manual add &amp; clone</td><td>vehicle.h</td></tr>
+              <tr><td>show.c</td><td>166</td><td><code class="inl">showVehicles()</code> &mdash; 3 display modes</td><td>vehicle.h</td></tr>
+              <tr><td>search.c</td><td>143</td><td><code class="inl">searchVehicle()</code> &mdash; 6 search modes</td><td>vehicle.h</td></tr>
+              <tr><td>update.c</td><td>317</td><td><code class="inl">updateVehicle()</code> &mdash; targeted &amp; bulk update</td><td>vehicle.h</td></tr>
+              <tr><td>delete.c</td><td>234</td><td><code class="inl">deleteVehicle()</code> &mdash; DSL-based deletion</td><td>vehicle.h</td></tr>
+              <tr><td>filter.c</td><td>139</td><td><code class="inl">filterVehicle()</code> &mdash; 5 filter predicates</td><td>vehicle.h</td></tr>
+              <tr><td>summary.c</td><td>225</td><td><code class="inl">summaryVehicle()</code> &mdash; 5 report types</td><td>vehicle.h</td></tr>
+              <tr><td>billing.c</td><td>157</td><td><code class="inl">billingVehicle()</code> &mdash; charge calculation</td><td>vehicle.h</td></tr>
+              <tr><td>undo.c</td><td>38</td><td><code class="inl">undoLastOperation()</code> &mdash; rollback</td><td>vehicle.h</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 06 ARCHITECTURE ============ -->
+      <section id="architecture">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 06</div>
+          <h2>System Architecture</h2>
+          <p>
+            A classic <b>menu-driven control loop</b> architecture. <code class="inl">main()</code> owns an
+            infinite <code class="inl">while(1)</code> loop, validates the numeric choice, and dispatches to
+            the responsible module through a <code class="inl">switch</code> statement. All modules share
+            global state declared in <code class="inl">vehicle.h</code> and defined once in <code class="inl">add.c</code> /
+            <code class="inl">main.c</code>.
+          </p>
+        </div>
+
+        <div class="flow">
+          <div class="step"><span class="n">1</span> Program Start</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">2</span> Print Menu</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">3</span> Read Choice</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">4</span> Validate Input</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">5</span> Dispatch Module</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">6</span> Update State</div><span class="arrow">&rarr;</span>
+          <div class="step"><span class="n">&#8635;</span> Loop / Exit</div>
+        </div>
+
+        <div class="code-head" style="margin-top:24px"><span>src/main.c &mdash; dispatch core</span><button class="copy">Copy</button></div>
+<pre><code><span class="kw">while</span> (1) {
+    <span class="fn">printf</span>(<span class="st">"\\n=====================================\\n"</span>);
+    <span class="cm">/* ... print menu items 1-9 and 0 ... */</span>
+
+    <span class="kw">if</span> (<span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;choice) != 1) {
+        <span class="fn">printf</span>(<span class="st">"\\nInvalid input!\\n"</span>);
+        <span class="kw">while</span> (<span class="fn">getchar</span>() != <span class="st">'\n'</span>);   <span class="cm">// flush bad input</span>
+        <span class="kw">continue</span>;
+    }
+
+    <span class="kw">switch</span> (choice) {
+        <span class="kw">case</span> 1: <span class="fn">addVehicle</span>();         <span class="kw">break</span>;
+        <span class="kw">case</span> 2: <span class="fn">showVehicles</span>();       <span class="kw">break</span>;
+        <span class="kw">case</span> 3: <span class="fn">updateVehicle</span>();      <span class="kw">break</span>;
+        <span class="kw">case</span> 4: <span class="fn">deleteVehicle</span>();      <span class="kw">break</span>;
+        <span class="kw">case</span> 5: <span class="fn">searchVehicle</span>();      <span class="kw">break</span>;
+        <span class="kw">case</span> 6: <span class="fn">filterVehicle</span>();      <span class="kw">break</span>;
+        <span class="kw">case</span> 7: <span class="fn">summaryVehicle</span>();     <span class="kw">break</span>;
+        <span class="kw">case</span> 8: <span class="fn">billingVehicle</span>();     <span class="kw">break</span>;
+        <span class="kw">case</span> 9: <span class="fn">undoLastOperation</span>();  <span class="kw">break</span>;
+        <span class="kw">case</span> 0: <span class="kw">return</span> 0;            <span class="cm">// clean exit</span>
+        <span class="kw">default</span>: <span class="fn">printf</span>(<span class="st">"\\nInvalid choice! Please try again.\\n"</span>);
+    }
+}</code></pre>
+
+        <div class="grid g2" style="margin-top:22px">
+          <div class="callout ok">
+            <div class="ci">&#10004;</div>
+            <div><b>Why this shape?</b><p>A switch-dispatch loop keeps the menu, the navigation and the business logic fully decoupled &mdash; each module can be read, tested and modified in isolation.</p></div>
+          </div>
+          <div class="callout info">
+            <div class="ci">&#128279;</div>
+            <div><b>Shared header pattern</b><p><code class="inl">vehicle.h</code> uses an include guard and <code class="inl">extern</code> declarations so every translation unit sees exactly one copy of each global.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 07 DATA MODEL ============ -->
+      <section id="data-model">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 07</div>
+          <h2>Data Model</h2>
+          <p>The heart of the system &mdash; a single <code class="inl">struct Vehicle</code> that flattens every vehicle type into one record with type-specific optional fields.</p>
+        </div>
+
+        <div class="code-head"><span>src/vehicle.h &mdash; record definition</span><button class="copy">Copy</button></div>
+<pre><code><span class="kw">#define</span> MAX <span class="nu">100</span>
+
+<span class="kw">struct</span> Vehicle {
+    <span class="kw">char</span> id[<span class="nu">10</span>];              <span class="cm">// "V001", "V002", ... auto-generated</span>
+    <span class="kw">char</span> type[<span class="nu">30</span>];            <span class="cm">// Bike | Car | Truck | Bus | Electric Vehicle</span>
+    <span class="kw">char</span> model[<span class="nu">50</span>];            <span class="cm">// Model name</span>
+    <span class="kw">char</span> brand[<span class="nu">50</span>];            <span class="cm">// Manufacturer</span>
+    <span class="kw">int</span>  year;                 <span class="cm">// Manufacture year (must be &gt;= 1999)</span>
+    <span class="kw">int</span>  engineCapacity;       <span class="cm">// cc (0 for Electric Vehicle)</span>
+
+    <span class="kw">char</span> color[<span class="nu">20</span>];            <span class="cm">// Common field</span>
+    <span class="kw">char</span> fuelType[<span class="nu">20</span>];         <span class="cm">// Common field (unused by EV)</span>
+
+    <span class="kw">int</span>  seatCount;            <span class="cm">// Car (2-12) / Bus (20-50)</span>
+    <span class="kw">int</span>  gearCount;            <span class="cm">// Bike (&lt;= 4)</span>
+
+    <span class="kw">int</span>  batteryCapacity;      <span class="cm">// EV only, 1000-12000 kWh</span>
+    <span class="kw">int</span>  chargeTime;           <span class="cm">// EV only, 1-24 hours</span>
+
+    <span class="kw">char</span> routeNumber[<span class="nu">20</span>];      <span class="cm">// Truck route identifier</span>
+};</code></pre>
+
+        <h3 style="margin-top:30px">Attribute Matrix</h3>
+        <div class="table-wrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>Field</th><th>Type</th><th>Size</th><th>Applies To</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>id</td><td><code class="inl">char[10]</code></td><td>10 B</td><td><span class="tag">All</span></td><td>Auto <code class="inl">V%03d</code>, unique</td></tr>
+              <tr><td>type</td><td><code class="inl">char[30]</code></td><td>30 B</td><td><span class="tag">All</span></td><td>One of 5 enumerated types</td></tr>
+              <tr><td>model</td><td><code class="inl">char[50]</code></td><td>50 B</td><td><span class="tag">All</span></td><td>Free text (may contain spaces)</td></tr>
+              <tr><td>brand</td><td><code class="inl">char[50]</code></td><td>50 B</td><td><span class="tag">All</span></td><td>Free text (may contain spaces)</td></tr>
+              <tr><td>year</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag">All</span></td><td><code class="inl">&gt;= 1999</code></td></tr>
+              <tr><td>engineCapacity</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag a">Bike/Car/Bus/Truck</span></td><td>Per-type range (2 attempts)</td></tr>
+              <tr><td>color</td><td><code class="inl">char[20]</code></td><td>20 B</td><td><span class="tag">All</span></td><td>Free text</td></tr>
+              <tr><td>fuelType</td><td><code class="inl">char[20]</code></td><td>20 B</td><td><span class="tag a">Non-EV</span></td><td>Free text</td></tr>
+              <tr><td>seatCount</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag p">Car / Bus</span></td><td>Car 2&ndash;12 &middot; Bus 20&ndash;50</td></tr>
+              <tr><td>gearCount</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag p">Bike</span></td><td><code class="inl">&lt;= 4</code></td></tr>
+              <tr><td>batteryCapacity</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag g">EV only</span></td><td>1000&ndash;12000 kWh</td></tr>
+              <tr><td>chargeTime</td><td><code class="inl">int</code></td><td>4 B</td><td><span class="tag g">EV only</span></td><td>1&ndash;24 hours</td></tr>
+              <tr><td>routeNumber</td><td><code class="inl">char[20]</code></td><td>20 B</td><td><span class="tag r">Truck</span></td><td>Free text token</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn" style="margin-top:20px">
+          <div class="ci">&#128208;</div>
+          <div>
+            <b>Design note &mdash; the "fat struct" trade-off</b>
+            <p>All five types share one structure instead of a base struct + subtypes. This keeps array
+            indexing trivial (<code class="inl">vehicles[i] = vehicles[j]</code> is a one-line copy) at the cost
+            of unused fields per record &mdash; a deliberate, beginner-friendly simplification documented here
+            so readers understand the trade-off.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 08 GLOBALS ============ -->
+      <section id="globals">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 08</div>
+          <h2>Global State</h2>
+          <p>Six variables constitute the entire runtime state of the application.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Variable</th><th>Declared In</th><th>Type</th><th>Initial</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code class="inl">vehicles[MAX]</code></td><td>add.c:5</td><td><code class="inl">struct Vehicle[100]</code></td><td>zeroed</td><td>The record store &mdash; a fixed-size array of 100 slots.</td></tr>
+              <tr><td><code class="inl">count</code></td><td>add.c:6</td><td><code class="inl">int</code></td><td>0</td><td>Number of live records; logical size of the array.</td></tr>
+              <tr><td><code class="inl">vehicleCounter</code></td><td>add.c:7</td><td><code class="inl">int</code></td><td>1</td><td>ID generator; formatted as <code class="inl">V%03d</code>.</td></tr>
+              <tr><td><code class="inl">lastOperation</code></td><td>main.c:4</td><td><code class="inl">int</code></td><td><code class="inl">UNDO_NONE</code></td><td>What the next undo should reverse (0&ndash;3).</td></tr>
+              <tr><td><code class="inl">undoVehicle</code></td><td>main.c:5</td><td><code class="inl">struct Vehicle</code></td><td>&mdash;</td><td>Snapshot of the record before mutation.</td></tr>
+              <tr><td><code class="inl">undoIndex</code></td><td>main.c:6</td><td><code class="inl">int</code></td><td>-1</td><td>Array position the snapshot belongs to.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-head" style="margin-top:20px"><span>Undo state constants</span><button class="copy">Copy</button></div>
+<pre><code><span class="kw">#define</span> UNDO_NONE   <span class="nu">0</span>   <span class="cm">// nothing to undo</span>
+<span class="kw">#define</span> UNDO_ADD    <span class="nu">1</span>   <span class="cm">// last action inserted a record</span>
+<span class="kw">#define</span> UNDO_UPDATE <span class="nu">2</span>   <span class="cm">// last action modified a record</span>
+<span class="kw">#define</span> UNDO_DELETE <span class="nu">3</span>   <span class="cm">// last action removed a record</span></code></pre>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 09 MODULES ============ -->
+      <section id="modules">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 09</div>
+          <h2>Module Reference</h2>
+          <p>One-sentence contract for every translation unit in the build.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Module</th><th>Entry Point</th><th>Responsibility</th><th>Sub-modes</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag">main.c</span></td><td><code class="inl">main()</code></td><td>Menu rendering, input sanitising and dispatch.</td><td>&mdash;</td></tr>
+              <tr><td><span class="tag">add.c</span></td><td><code class="inl">addVehicle()</code></td><td>Creates records with validated, type-specific fields.</td><td>Manual add &middot; Clone</td></tr>
+              <tr><td><span class="tag">show.c</span></td><td><code class="inl">showVehicles()</code></td><td>Read-only presentation of stored records.</td><td>All &middot; Grouped &middot; EV only</td></tr>
+              <tr><td><span class="tag">search.c</span></td><td><code class="inl">searchVehicle()</code></td><td>Locates records by exact or partial criteria.</td><td>6 search keys</td></tr>
+              <tr><td><span class="tag">update.c</span></td><td><code class="inl">updateVehicle()</code></td><td>Mutates one record or many matching a condition.</td><td>By ID &middot; Partial</td></tr>
+              <tr><td><span class="tag">delete.c</span></td><td><code class="inl">deleteVehicle()</code></td><td>Parses a small command language to remove records.</td><td>7 command forms</td></tr>
+              <tr><td><span class="tag">filter.c</span></td><td><code class="inl">filterVehicle()</code></td><td>Applies compound predicates without modifying data.</td><td>5 predicates</td></tr>
+              <tr><td><span class="tag">summary.c</span></td><td><code class="inl">summaryVehicle()</code></td><td>Aggregates statistics across the fleet.</td><td>5 reports</td></tr>
+              <tr><td><span class="tag">billing.c</span></td><td><code class="inl">billingVehicle()</code></td><td>Computes a deterministic service charge per vehicle.</td><td>5 rule sets</td></tr>
+              <tr><td><span class="tag">undo.c</span></td><td><code class="inl">undoLastOperation()</code></td><td>Reverses the single most recent mutation.</td><td>Add &middot; Update &middot; Delete</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+      <!-- ============ 10 MENU ============ -->
+      <section id="menu">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 10</div>
+          <h2>Main Menu Map</h2>
+          <p>The ten-entry menu printed on every loop iteration.</p>
+        </div>
+
+        <div class="menu-map">
+          <div class="menu-item"><div class="k">1</div><div><h5>Add Vehicle</h5><p>Manual entry with validation, or clone an existing record.</p></div></div>
+          <div class="menu-item"><div class="k">2</div><div><h5>Show Vehicles</h5><p>Full list, grouped by type, or electric vehicles only.</p></div></div>
+          <div class="menu-item"><div class="k">3</div><div><h5>Update Vehicle</h5><p>Single-field, full-field or condition-based bulk update.</p></div></div>
+          <div class="menu-item"><div class="k">4</div><div><h5>Delete Vehicle</h5><p>Command-language single and bulk deletion.</p></div></div>
+          <div class="menu-item"><div class="k">5</div><div><h5>Search Vehicle</h5><p>Six keys: ID, type, model, year, cc, battery.</p></div></div>
+          <div class="menu-item"><div class="k">6</div><div><h5>Filter Vehicle</h5><p>Compound year / capacity / type / battery predicates.</p></div></div>
+          <div class="menu-item"><div class="k">7</div><div><h5>Summary Vehicle</h5><p>Five analytical reports over the whole fleet.</p></div></div>
+          <div class="menu-item"><div class="k">8</div><div><h5>Billing Vehicle</h5><p>Tiered service charge with age surcharge.</p></div></div>
+          <div class="menu-item"><div class="k">9</div><div><h5>Undo Last Operation</h5><p>Rolls back the most recent add/update/delete.</p></div></div>
+          <div class="menu-item"><div class="k zero">0</div><div><h5>Exit</h5><p>Clean termination with a goodbye banner.</p></div></div>
+        </div>
+
+        <div class="term" style="margin-top:24px">
+          <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>vehicle &mdash; console</span></div>
+          <div class="term-body"><span class="dim">=====================================</span>
+       VEHICLE MANAGEMENT SYSTEM
+<span class="dim">=====================================</span>
+ 1. Add Vehicle
+ 2. Show Vehicles
+ 3. Update Vehicle
+ 4. Delete Vehicle
+ 5. Search Vehicle
+ 6. Filter Vehicle
+ 7. Summary Vehicle
+ 8. Billing Vehicle
+ 9. Undo Last Operation
+ 0. Exit
+<span class="dim">=====================================</span>
+Enter your choice: <span class="p">_</span></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 11 CORE ============ -->
+      <section id="core">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 11</div>
+          <h2>Core Operations</h2>
+          <p>The five fundamental record-management operations, with their exact behaviour and edge cases.</p>
+        </div>
+
+        <div class="tabs" id="coreTabs">
+          <button class="tab on" data-tab="t-add">&#9312; Add</button>
+          <button class="tab" data-tab="t-show">&#9313; Show</button>
+          <button class="tab" data-tab="t-search">&#9314; Search</button>
+          <button class="tab" data-tab="t-update">&#9315; Update</button>
+          <button class="tab" data-tab="t-del">&#9316; Delete</button>
+        </div>
+
+        <!-- ADD -->
+        <div class="panel on" id="t-add">
+          <div class="grid g2">
+            <div class="card">
+              <h3>Insert Flow</h3>
+              <div class="flow" style="margin-top:12px">
+                <div class="step"><span class="n">1</span> Choose mode</div><span class="arrow">&rarr;</span>
+                <div class="step"><span class="n">2</span> Generate ID</div><span class="arrow">&rarr;</span>
+                <div class="step"><span class="n">3</span> Pick type</div><span class="arrow">&rarr;</span>
+                <div class="step"><span class="n">4</span> Common fields</div><span class="arrow">&rarr;</span>
+                <div class="step"><span class="n">5</span> Type fields</div><span class="arrow">&rarr;</span>
+                <div class="step"><span class="n">6</span> Commit</div>
+              </div>
+              <ul class="list" style="margin-top:18px">
+                <li>ID is generated <b>before</b> any input via <code class="inl">sprintf(id,"V%03d",vehicleCounter)</code>.</li>
+                <li>Type is chosen from a numbered 1&ndash;5 sub-menu, never free-typed.</li>
+                <li>Common fields: model, brand, year (&ge; 1999), then colour last.</li>
+                <li>On any validation abort, <code class="inl">count</code> is <b>not</b> incremented &mdash; no partial record is committed.</li>
+                <li>Success sets <code class="inl">lastOperation = UNDO_ADD</code> and <code class="inl">undoIndex = count-1</code>.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Clone Mode</h3>
+              <p class="muted">Option 2 copies an entire existing record and stamps it with a fresh ID &mdash; a fast template for near-identical fleet entries.</p>
+              <ul class="list" style="margin-top:14px">
+                <li>Prompts for a source <b>Vehicle ID</b>.</li>
+                <li>Performs a struct assignment <code class="inl">vehicles[count] = vehicles[i]</code>.</li>
+                <li>Overwrites the ID with the next generated value.</li>
+                <li>Reports <b>"Vehicle ID not found"</b> when the source is absent.</li>
+              </ul>
+              <div class="callout info" style="margin-top:16px">
+                <div class="ci">&#128161;</div>
+                <div><b>Uniqueness guarantee</b><p>Because IDs come from a monotonically increasing counter, duplicates are structurally impossible &mdash; no scan is ever needed.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHOW -->
+        <div class="panel" id="t-show">
+          <div class="grid g3">
+            <div class="card">
+              <h4>1 &middot; Show All</h4>
+              <p class="muted">Renders every record with a numbered header block and all attributes relevant to its type. Empty store prints <b>"No vehicles available."</b></p>
+            </div>
+            <div class="card">
+              <h4>2 &middot; Grouped by Type</h4>
+              <p class="muted">Five fixed sections &mdash; Bikes, Cars, Buses, Trucks, EVs &mdash; each printing a compact one-line summary per record.</p>
+            </div>
+            <div class="card">
+              <h4>3 &middot; Electric Only</h4>
+              <p class="muted">Filters on <code class="inl">type == "Electric Vehicle"</code> and shows battery capacity and charge time; prints a notice when none exist.</p>
+            </div>
+          </div>
+          <div class="code-head" style="margin-top:20px"><span>Compact grouped output format</span><button class="copy">Copy</button></div>
+<pre><code><span class="cm">----------- BIKES -----------</span>
+V001 | Pulsar 150 | Bajaj | 150cc | 5 gears
+<span class="cm">----------- CARS ------------</span>
+V002 | Corolla | Toyota | 1600cc | 5 seats
+<span class="cm">----- ELECTRIC VEHICLES -----</span>
+V003 | Model 3 | Tesla | 7500kWh | 6 hrs</code></pre>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="panel" id="t-search">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Search Key</th><th>Input Type</th><th>Match Rule</th><th>Behaviour</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Vehicle ID</td><td>Text</td><td>Case-insensitive exact <code class="inl">strcmp</code></td><td>Stops after first hit (unique key)</td></tr>
+                <tr><td>2</td><td>Vehicle Type</td><td>Text</td><td>Case-insensitive exact</td><td>Lists every match</td></tr>
+                <tr><td>3</td><td>Model Name</td><td>Text</td><td>Case-insensitive <code class="inl">strstr</code> substring</td><td>Lists every match</td></tr>
+                <tr><td>4</td><td>Manufacturing Year</td><td>Integer</td><td><code class="inl">year == value</code></td><td>Lists every match</td></tr>
+                <tr><td>5</td><td>Engine Capacity</td><td>Integer</td><td><code class="inl">engineCapacity == value</code></td><td>Lists every match</td></tr>
+                <tr><td>6</td><td>Battery Capacity (EV)</td><td>Integer</td><td>Type is EV <b>and</b> battery equals value</td><td>Lists every match</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="grid g2" style="margin-top:20px">
+            <div class="callout ok"><div class="ci">&#10004;</div><div><b>Case-insensitive by design</b><p>Both the needle and each haystack field are lower-cased into a scratch buffer before comparison, so <code class="inl">"corolla"</code> finds <code class="inl">"Corolla"</code>.</p></div></div>
+            <div class="callout warn"><div class="ci">!</div><div><b>Feedback</b><p>Zero matches prints <b>"No matching vehicle found."</b>; an empty store short-circuits with <b>"No vehicles available."</b></p></div></div>
+          </div>
+        </div>
+
+        <!-- UPDATE -->
+        <div class="panel" id="t-update">
+          <div class="grid g2">
+            <div class="card">
+              <h3>Mode 1 &mdash; Update by ID</h3>
+              <ul class="list">
+                <li>Displays the <b>current</b> record before allowing changes.</li>
+                <li>Eight field choices: model, brand, year, engine capacity, colour, fuel type, <i>type-specific value</i>, or <b>all fields</b>.</li>
+                <li>Choice 7 auto-routes: Bike &rarr; gear count, Car/Bus &rarr; seat count, Truck &rarr; route number, EV &rarr; battery or charge time.</li>
+                <li>Snapshots the record into <code class="inl">undoVehicle</code> <b>before</b> writing.</li>
+                <li>Unknown ID prints <b>"Vehicle not found!"</b>.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Mode 2 &mdash; Partial Update</h3>
+              <p class="muted"><b>Match by</b> (4 options): Brand &middot; Vehicle Type &middot; Engine capacity greater than &middot; Battery capacity (EV only).</p>
+              <p class="muted" style="margin-top:10px"><b>Update</b> (6 options): Brand &middot; Type &middot; Engine capacity &middot; Colour &middot; Fuel type &middot; Battery capacity.</p>
+              <ul class="list" style="margin-top:14px">
+                <li>Scans the whole array once, mutating <b>every</b> record satisfying the predicate.</li>
+                <li>Ideal for renames such as <code class="inl">Honda &rarr; Honda Motors</code>.</li>
+                <li>Undo snapshot tracks only the <b>last</b> matched record (see &#167;15).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- DELETE -->
+        <div class="panel" id="t-del">
+          <p class="muted" style="margin-bottom:16px">The delete module implements a tiny command language typed on a single line. Prefix must be the literal token <code class="inl">delete</code>.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Command</th><th>Example</th><th>Semantics</th><th>Match</th></tr></thead>
+              <tbody>
+                <tr><td><code class="inl">delete &lt;ID&gt;</code></td><td><code class="inl">delete V102</code></td><td>Remove one record by exact ID</td><td><span class="tag">Single</span></td></tr>
+                <tr><td><code class="inl">delete older &lt;YEAR&gt;</code></td><td><code class="inl">delete older 2018</code></td><td>Remove all with <code class="inl">year &lt; YEAR</code></td><td><span class="tag r">Bulk</span></td></tr>
+                <tr><td><code class="inl">delete engine &lt; &lt;CC&gt;</code></td><td><code class="inl">delete engine &lt; 1500</code></td><td>Remove all under the cc threshold</td><td><span class="tag r">Bulk</span></td></tr>
+                <tr><td><code class="inl">delete engine &gt; &lt;CC&gt;</code></td><td><code class="inl">delete engine &gt; 2000</code></td><td>Remove all above the cc threshold</td><td><span class="tag r">Bulk</span></td></tr>
+                <tr><td><code class="inl">delete battery &gt; &lt;KWH&gt;</code></td><td><code class="inl">delete battery &gt; 100</code></td><td>EV only &mdash; remove above threshold</td><td><span class="tag r">Bulk</span></td></tr>
+                <tr><td><code class="inl">delete battery &lt; &lt;KWH&gt;</code></td><td><code class="inl">delete battery &lt; 50</code></td><td>EV only &mdash; remove below threshold</td><td><span class="tag r">Bulk</span></td></tr>
+                <tr><td><code class="inl">delete brand &lt;NAME&gt;</code></td><td><code class="inl">delete brand Toyota</code></td><td>Remove every record of that brand</td><td><span class="tag r">Bulk</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="grid g2" style="margin-top:20px">
+            <div class="callout ok"><div class="ci">&#10004;</div><div><b>Compaction algorithm</b><p>Records after the deleted slot are shifted one position left with a manual loop; <code class="inl">count</code> is decremented so there are never holes in the array.</p></div></div>
+            <div class="callout info"><div class="ci">&#8634;</div><div><b>Session loop</b><p>The prompt repeats until the user types <code class="inl">0</code>, allowing several bulk commands in one visit. Unparsable input prints <b>"Invalid command."</b></p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 12 ADVANCED ============ -->
+      <section id="advanced">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 12</div>
+          <h2>Advanced Operations</h2>
+          <p>Filtering, reporting and other multi-record analytics that go beyond basic CRUD.</p>
+        </div>
+
+        <h3>12.1 &middot; Filter Engine</h3>
+        <div class="table-wrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>#</th><th>Predicate</th><th>Prompts</th><th>Logic</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Below year <b>AND</b> greater engine capacity</td><td>year, cc</td><td><code class="inl">year &lt; Y &amp;&amp; engine &gt; CC</code></td></tr>
+              <tr><td>2</td><td>Below year <b>AND</b> less engine capacity</td><td>year, cc</td><td><code class="inl">year &lt; Y &amp;&amp; engine &lt; CC</code></td></tr>
+              <tr><td>3</td><td>After year <b>AND</b> less engine capacity</td><td>year, cc</td><td><code class="inl">year &gt; Y &amp;&amp; engine &lt; CC</code></td></tr>
+              <tr><td>4</td><td>Vehicle type <b>AND</b> greater engine capacity</td><td>type, cc</td><td><code class="inl">type == T &amp;&amp; engine &gt; CC</code></td></tr>
+              <tr><td>5</td><td>Electric Vehicle by battery capacity</td><td>kWh</td><td><code class="inl">type == EV &amp;&amp; battery &gt;= kWh</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:12px">Filters are <b>read-only</b> &mdash; they print matching records in full detail and never mutate state. EV records are excluded from cc-based predicates because their engine capacity is zeroed on entry.</p>
+
+        <h3 style="margin-top:34px">12.2 &middot; Summary Reports</h3>
+        <div class="grid g2" style="margin-top:14px">
+          <div class="card">
+            <h4>1 &middot; Overall Vehicle Summary</h4>
+            <p class="muted">Total count, per-type breakdown (Bike/Car/Bus/Truck/EV) and the average manufacturing year computed as <code class="inl">(float)yearSum / count</code>.</p>
+          </div>
+          <div class="card">
+            <h4>2 &middot; Engine Capacity Report</h4>
+            <p class="muted">Max, min and average cc across all non-EV vehicles. Handles the degenerate case where only EVs exist.</p>
+          </div>
+          <div class="card">
+            <h4>3 &middot; Manufacturing Year Report</h4>
+            <p class="muted">Oldest and newest model year found in the fleet &mdash; a single forward pass.</p>
+          </div>
+          <div class="card">
+            <h4>4 &middot; Brand Distribution Report</h4>
+            <p class="muted">Unique brands with absolute count and percentage share. First-occurrence de-duplication avoids printing a brand twice.</p>
+          </div>
+          <div class="card">
+            <h4>5 &middot; Electric Vehicle Report</h4>
+            <p class="muted">EV population with share, plus max/min/avg battery capacity and charge time. Prints a notice when the fleet has no EVs.</p>
+          </div>
+          <div class="card">
+            <h4>Grouped Display</h4>
+            <p class="muted">Available under <b>Show &rarr; option 2</b>, this visually groups every record into its five type sections for quick scanning.</p>
+          </div>
+        </div>
+
+        <div class="code-head" style="margin-top:22px"><span>Sample report output</span><button class="copy">Copy</button></div>
+<pre><code><span class="cm">-------------------------------------</span>
+          OVERALL SUMMARY
+<span class="cm">-------------------------------------</span>
+Total Vehicles : 20
+Bike                        : 12
+Car                         : 5
+Bus                         : 2
+Truck                       : 1
+Electric Vehicle            : 0
+Average Manufacturing Year  : 2019.45
+
+<span class="cm">-------------------------------------</span>
+       BRAND DISTRIBUTION REPORT
+<span class="cm">-------------------------------------</span>
+Toyota : 5 (25.00%)
+Honda  : 3 (15.00%)
+Bajaj  : 4 (20.00%)
+Others : 8 (40.00%)</code></pre>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 13 VALIDATION ============ -->
+      <section id="validation">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 13</div>
+          <h2>Validation Rules</h2>
+          <p>Every constraint enforced by the input layer, exactly as implemented in <code class="inl">add.c</code>.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Rule</th><th>Accept Range</th><th>On Failure</th></tr></thead>
+            <tbody>
+              <tr><td>Vehicle Type</td><td>Enumerated choice 1&ndash;5</td><td>Bike &middot; Car &middot; Truck &middot; Bus &middot; Electric Vehicle</td><td><span class="tag r">Abort immediately</span></td></tr>
+              <tr><td>Vehicle ID</td><td>Auto-generated</td><td><code class="inl">V001</code> &hellip; <code class="inl">V999</code></td><td><span class="tag g">Never fails</span></td></tr>
+              <tr><td>Manufacture Year</td><td>Integer &ge; 1999</td><td>1999 &hellip; 9999</td><td><span class="tag r">Abort immediately</span></td></tr>
+              <tr><td>Bike &middot; Engine Capacity</td><td>Range check</td><td><b>80 &ndash; 200</b> cc</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Bike &middot; Gear Count</td><td>Upper bound</td><td>&le; 4</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Car &middot; Engine Capacity</td><td>Range check</td><td><b>750 &ndash; 2000</b> cc</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Car &middot; Seat Count</td><td>Range check</td><td><b>2 &ndash; 12</b></td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Bus &middot; Engine Capacity</td><td>Range check</td><td><b>1500 &ndash; 3500</b> cc</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Bus &middot; Seat Count</td><td>Range check</td><td><b>20 &ndash; 50</b></td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Truck &middot; Engine Capacity</td><td>Range check</td><td><b>2000 &ndash; 7500</b> cc</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Truck &middot; Route Number</td><td>Token string</td><td>Any single word</td><td><span class="tag r">Unvalidated</span></td></tr>
+              <tr><td>EV &middot; Battery Capacity</td><td>Range check</td><td><b>1000 &ndash; 12000</b> kWh</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>EV &middot; Charge Time</td><td>Range check</td><td><b>1 &ndash; 24</b> hours</td><td><span class="tag a">Retry &times;2 then abort</span></td></tr>
+              <tr><td>Model / Brand / Fuel / Colour</td><td>Length-limited scan</td><td>Buffer size &minus; 1 chars</td><td><span class="tag">Free text</span></td></tr>
+              <tr><td>Menu Choice</td><td><code class="inl">scanf != 1</code> detection</td><td>Any integer</td><td><span class="tag g">Flush &amp; re-prompt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn" style="margin-top:20px">
+          <div class="ci">&#128260;</div>
+          <div>
+            <b>Retry policy</b>
+            <p>Numeric fields use a bounded <code class="inl">while (attempts &lt; 2)</code> loop. Two consecutive invalid
+            entries print <b>"Too many invalid attempts. Aborting vehicle addition."</b> and the whole insert is
+            rolled back &mdash; the ID counter has already advanced, so the skipped ID is never reused.</p>
+          </div>
+        </div>
+
+        <div class="callout info" style="margin-top:16px">
+          <div class="ci">&#9000;&#65039;</div>
+          <div>
+            <b>Buffer safety note</b>
+            <p>String fields are read with <code class="inl">scanf(" %[^\n]", ...)</code> which consumes spaces but is not
+            width-limited in the current implementation. For production use, switch to
+            <code class="inl">%49s</code>-style width specifiers or <code class="inl">fgets</code>. This is tracked in &#167;20.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 14 BILLING ============ -->
+      <section id="billing">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 14</div>
+          <h2>Billing Engine</h2>
+          <p>
+            <code class="inl">billingVehicle()</code> resolves a vehicle by ID and computes a service charge in
+            Bangladeshi Taka (TK) using deterministic, type-specific tier tables. Rules below reflect the
+            shipped implementation in <code class="inl">src/billing.c</code>.
+          </p>
+        </div>
+
+        <div class="tabs" id="billTabs">
+          <button class="tab on" data-tab="b-bike">Bike</button>
+          <button class="tab" data-tab="b-car">Car</button>
+          <button class="tab" data-tab="b-bus">Bus</button>
+          <button class="tab" data-tab="b-truck">Truck</button>
+          <button class="tab" data-tab="b-ev">Electric Vehicle</button>
+        </div>
+
+        <div class="panel on" id="b-bike">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Engine Capacity</th><th>Formula</th><th>Example (gears)</th></tr></thead>
+              <tbody>
+                <tr><td>&le; 100 cc</td><td><code class="inl">300 + (gearCount &times; 50)</code></td><td>4 gears &rarr; <b>500 TK</b></td></tr>
+                <tr><td>101 &ndash; 150 cc</td><td><code class="inl">400 + (gearCount &times; 75)</code></td><td>5 gears &rarr; <b>775 TK</b></td></tr>
+                <tr><td>&gt; 150 cc</td><td><code class="inl">500 + (gearCount &times; 100)</code></td><td>6 gears &rarr; <b>1100 TK</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="margin-top:14px">Gear count is capped at 4 during input, so the maximum bike charge before surcharge is <b>400 + 300 = 700 TK</b> in the middle tier.</p>
+        </div>
+
+        <div class="panel" id="b-car">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Engine Capacity</th><th>Charge</th></tr></thead>
+              <tbody>
+                <tr><td>&le; 1000 cc</td><td><b>1500 TK</b></td></tr>
+                <tr><td>1001 &ndash; 1500 cc</td><td><b>2000 TK</b></td></tr>
+                <tr><td>&gt; 1500 cc</td><td><b>2500 TK</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" id="b-bus">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Seat Group</th><th>&le; 1500 cc</th><th>1501 &ndash; 2500 cc</th><th>&gt; 2500 cc</th></tr></thead>
+              <tbody>
+                <tr><td>20 &ndash; 30 seats</td><td>2000 TK</td><td>2500 TK</td><td>3000 TK</td></tr>
+                <tr><td>31 &ndash; 40 seats</td><td>2500 TK</td><td>3000 TK</td><td>3500 TK</td></tr>
+                <tr><td>41 &ndash; 50 seats</td><td>3000 TK</td><td>3500 TK</td><td>4000 TK</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="margin-top:14px">A two-dimensional tier: the seat band sets the base row, then engine capacity escalates within that row.</p>
+        </div>
+
+        <div class="panel" id="b-truck">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Engine Capacity</th><th>Charge</th></tr></thead>
+              <tbody>
+                <tr><td>&le; 2000 cc</td><td>2000 TK</td></tr>
+                <tr><td>2001 &ndash; 3000 cc</td><td>2500 TK</td></tr>
+                <tr><td>3001 &ndash; 5000 cc</td><td>3500 TK</td></tr>
+                <tr><td>5001 &ndash; 7500 cc</td><td>4500 TK</td></tr>
+                <tr><td>&gt; 7500 cc</td><td>5500 TK</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" id="b-ev">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Condition</th><th>Charge</th></tr></thead>
+              <tbody>
+                <tr><td>Base charge</td><td>800 TK</td></tr>
+                <tr><td>Battery 1000 &ndash; 4000 kWh</td><td>+ 500 TK</td></tr>
+                <tr><td>Battery 4001 &ndash; 8000 kWh</td><td>+ 1000 TK</td></tr>
+                <tr><td>Battery 8001 &ndash; 12000 kWh</td><td>+ 1500 TK</td></tr>
+                <tr><td>Charge time &gt; 6 hours</td><td>+ 300 TK</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="margin-top:14px">Maximum EV charge = 800 + 1500 + 300 = <b>2600 TK</b>.</p>
+        </div>
+
+        <h3 style="margin-top:32px">Common Adjustments</h3>
+        <div class="grid g2" style="margin-top:12px">
+          <div class="callout warn">
+            <div class="ci">&#128336;&#65039;</div>
+            <div><b>Age surcharge &mdash; +200 TK</b><p>Applied when <code class="inl">currentYear &minus; year &gt; 5</code>. The reference year is a compile-time constant <code class="inl">currentYear = 2026</code>, so any vehicle manufactured before 2021 attracts the surcharge.</p></div>
+          </div>
+          <div class="callout ok">
+            <div class="ci">&#128737;&#65039;</div>
+            <div><b>Floor value &mdash; never negative</b><p>After all tiers and surcharges, <code class="inl">if (charge &lt; 0) charge = 0;</code> guarantees a non-negative payable amount under any input combination.</p></div>
+          </div>
+        </div>
+
+        <div class="code-head" style="margin-top:22px"><span>Computation pipeline</span><button class="copy">Copy</button></div>
+<pre><code><span class="kw">int</span> charge = <span class="fn">resolveBaseTier</span>(vehicle);   <span class="cm">// per-type table</span>
+<span class="kw">if</span> (currentYear - vehicle.year &gt; <span class="nu">5</span>)
+    charge += <span class="nu">200</span>;                       <span class="cm">// age surcharge</span>
+<span class="kw">if</span> (charge &lt; <span class="nu">0</span>)
+    charge = <span class="nu">0</span>;                          <span class="cm">// non-negative floor</span>
+<span class="fn">printf</span>(<span class="st">"Service Charge      : %d TK\n"</span>, charge);</code></pre>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 15 UNDO ============ -->
+      <section id="undo">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 15</div>
+          <h2>Undo System</h2>
+          <p>A single-level snapshot mechanism that reverses the most recent mutating operation.</p>
+        </div>
+
+        <div class="grid g3">
+          <div class="card">
+            <h4>&#8617; UNDO_ADD</h4>
+            <p class="muted">Simply decrements <code class="inl">count</code>, logically discarding the record appended last. The ID counter is <b>not</b> rolled back, so the ID is permanently retired.</p>
+          </div>
+          <div class="card">
+            <h4>&#8617; UNDO_UPDATE</h4>
+            <p class="muted">Restores the stored snapshot: <code class="inl">vehicles[undoIndex] = undoVehicle</code>. Works for both single and partial updates.</p>
+          </div>
+          <div class="card">
+            <h4>&#8617; UNDO_DELETE</h4>
+            <p class="muted">Shifts every record from <code class="inl">undoIndex</code> onward one slot to the right, re-inserts the snapshot and increments <code class="inl">count</code>.</p>
+          </div>
+        </div>
+
+        <div class="code-head" style="margin-top:22px"><span>src/undo.c &mdash; full implementation</span><button class="copy">Copy</button></div>
+<pre><code><span class="kw">void</span> <span class="fn">undoLastOperation</span>() {
+    <span class="kw">int</span> i;
+
+    <span class="kw">if</span> (lastOperation == UNDO_NONE) {
+        <span class="fn">printf</span>(<span class="st">"\nNo operation to undo.\n"</span>);
+        <span class="kw">return</span>;
+    }
+
+    <span class="kw">if</span> (lastOperation == UNDO_ADD) {
+        count--;
+        <span class="fn">printf</span>(<span class="st">"\nLast add operation undone successfully.\n"</span>);
+    }
+    <span class="kw">else if</span> (lastOperation == UNDO_UPDATE) {
+        vehicles[undoIndex] = undoVehicle;
+        <span class="fn">printf</span>(<span class="st">"\nLast update operation undone successfully.\n"</span>);
+    }
+    <span class="kw">else if</span> (lastOperation == UNDO_DELETE) {
+        <span class="kw">for</span> (i = count; i &gt; undoIndex; i--)
+            vehicles[i] = vehicles[i - <span class="nu">1</span>];
+        vehicles[undoIndex] = undoVehicle;
+        count++;
+        <span class="fn">printf</span>(<span class="st">"\nLast delete operation undone successfully.\n"</span>);
+    }
+
+    lastOperation = UNDO_NONE;   <span class="cm">// undo is single-shot</span>
+    undoIndex = -<span class="nu">1</span>;
+}</code></pre>
+
+        <div class="callout warn" style="margin-top:20px">
+          <div class="ci">&#9888;&#65039;</div>
+          <div>
+            <b>Known behaviour &mdash; partial update undo</b>
+            <p>When a condition-based update matches <i>n</i> records, only the <b>last matched</b> record is
+            snapshotted (the loop overwrites <code class="inl">undoVehicle</code> each iteration). Undo therefore
+            restores just that one record. This limitation is documented and queued in the roadmap (&#167;21).</p>
+          </div>
+        </div>
+
+        <div class="callout info" style="margin-top:16px">
+          <div class="ci">&#127918;</div>
+          <div>
+            <b>Depth = 1</b>
+            <p>After one undo, <code class="inl">lastOperation</code> resets to <code class="inl">UNDO_NONE</code>, so a second
+            consecutive undo reports <b>"No operation to undo."</b> A full undo stack is a planned enhancement.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+      <!-- ============ 16 API ============ -->
+      <section id="api">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 16</div>
+          <h2>Function API</h2>
+          <p>Public interface declared in <code class="inl">vehicle.h</code>. All functions take no arguments and return nothing &mdash; they communicate exclusively through global state and standard output.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Prototype</th><th>Defined In</th><th>Preconditions</th><th>Postconditions</th></tr></thead>
+            <tbody>
+              <tr><td><code class="inl">void addVehicle()</code></td><td>add.c:9</td><td><code class="inl">count &lt; MAX</code></td><td><code class="inl">count</code> +1 on success; undo armed</td></tr>
+              <tr><td><code class="inl">void showVehicles()</code></td><td>show.c:5</td><td>none</td><td>Read-only; state unchanged</td></tr>
+              <tr><td><code class="inl">void searchVehicle()</code></td><td>search.c:6</td><td><code class="inl">count &gt; 0</code></td><td>Read-only; loops until back</td></tr>
+              <tr><td><code class="inl">void updateVehicle()</code></td><td>update.c:5</td><td><code class="inl">count &gt; 0</code></td><td>Record mutated; undo snapshot set</td></tr>
+              <tr><td><code class="inl">void deleteVehicle()</code></td><td>delete.c:6</td><td><code class="inl">count &gt; 0</code></td><td>Array compacted; undo snapshot set</td></tr>
+              <tr><td><code class="inl">void filterVehicle()</code></td><td>filter.c:6</td><td><code class="inl">count &gt; 0</code></td><td>Read-only; loops until back</td></tr>
+              <tr><td><code class="inl">void summaryVehicle()</code></td><td>summary.c:5</td><td><code class="inl">count &gt; 0</code></td><td>Read-only; loops until back</td></tr>
+              <tr><td><code class="inl">void billingVehicle()</code></td><td>billing.c:5</td><td><code class="inl">count &gt; 0</code></td><td>Read-only; prints charge</td></tr>
+              <tr><td><code class="inl">void undoLastOperation()</code></td><td>undo.c:6</td><td><code class="inl">lastOperation != 0</code></td><td>State reverted; undo disarmed</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout info" style="margin-top:20px">
+          <div class="ci">&#129514;</div>
+          <div><b>Empty-store guard</b><p>Every module except <code class="inl">addVehicle()</code> begins with an <code class="inl">if (count == 0)</code> check and exits gracefully &mdash; the application never dereferences an empty array.</p></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 17 SESSION ============ -->
+      <section id="session">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 17</div>
+          <h2>Sample Session</h2>
+          <p>A realistic end-to-end walkthrough: add two vehicles, inspect, filter, bill and exit.</p>
+        </div>
+
+        <div class="term">
+          <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>vehicle &mdash; bash</span></div>
+          <div class="term-body"><span class="dim">$</span> gcc *.c -o vehicle
+<span class="dim">$</span> ./vehicle
+
+<span class="dim">=====================================</span>
+       VEHICLE MANAGEMENT SYSTEM
+<span class="dim">=====================================</span>
+ 1. Add Vehicle
+ ...
+ 0. Exit
+<span class="dim">=====================================</span>
+Enter your choice: <span class="p">1</span>
+
+<span class="dim">=====================================</span>
+            ADD VEHICLE
+<span class="dim">=====================================</span>
+1. Add New Vehicle (Manual)
+2. Clone Existing Vehicle
+0. Cancel
+Enter your choice: <span class="p">1</span>
+
+Generated Vehicle ID     : <span class="ok">V001</span>
+Select Type (1-5)        : <span class="p">2</span>
+Enter Vehicle Model      : <span class="p">Corolla</span>
+Enter Vehicle Brand Name : <span class="p">Toyota</span>
+Vehicle Manufacture Year : <span class="p">2019</span>
+Enter Engine Capacity (cc): <span class="p">1600</span>
+Enter Fuel Type           : <span class="p">Petrol</span>
+Enter Seat Count (2 to 12): <span class="p">5</span>
+Enter Vehicle Color            : <span class="p">Silver</span>
+
+<span class="ok">-------------------------------------
+ Vehicle Added Successfully!
+-------------------------------------</span>
+
+Enter your choice: <span class="p">1</span>   <span class="dim">-&gt; repeat, creating V002 (Bike, Pulsar 150, Bajaj, 2021, 150cc, 5 gears, Black)</span>
+
+Enter your choice: <span class="p">6</span>
+
+<span class="dim">=====================================</span>
+            FILTER VEHICLE
+<span class="dim">=====================================</span>
+1. Below year AND greater engine capacity
+...
+0. Back
+Enter choice: <span class="p">3</span>
+Enter year: <span class="p">2020</span>
+Enter engine capacity: <span class="p">100</span>
+
+<span class="dim">-------------------------------------</span>
+Vehicle ID        : <span class="ok">V002</span>
+Vehicle Type      : Bike
+Model Name        : Pulsar 150
+Brand             : Bajaj
+Manufacture Year  : 2021
+Engine Capacity   : 150 cc
+Gear Count        : 5
+<span class="dim">-------------------------------------</span>
+
+Enter your choice: <span class="p">8</span>
+Enter Vehicle ID for billing: <span class="p">V001</span>
+
+<span class="dim">--------------------------------------</span>
+Vehicle ID          : V001
+Vehicle Type        : Car
+Engine Capacity     : 1600 cc
+Seat Count          : 5
+Manufacturing Year  : 2019
+Service Charge      : <span class="wn">2700 TK</span>
+<span class="dim">--------------------------------------</span>
+<span class="dim">   (2500 base + 200 age surcharge, vehicle is 7 years old)</span>
+
+Enter your choice: <span class="p">0</span>
+
+<span class="dim">=====================================</span>
+     Exiting Vehicle Management...
+     Goodbye!
+<span class="dim">=====================================</span>
+<span class="dim">$</span> <span class="p">_</span></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 18 COMPLEXITY ============ -->
+      <section id="complexity">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 18</div>
+          <h2>Complexity Notes</h2>
+          <p>Asymptotic cost of each operation, where <i>n</i> = number of stored records (<code class="inl">count</code>).</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Operation</th><th>Time</th><th>Space</th><th>Bottleneck</th></tr></thead>
+            <tbody>
+              <tr><td>Add (manual / clone)</td><td><span class="tag g">O(1)</span></td><td>O(1)</td><td>Constant work; ID from counter</td></tr>
+              <tr><td>Show all</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Single sequential pass</td></tr>
+              <tr><td>Search (all 6 keys)</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Linear scan; no indexing</td></tr>
+              <tr><td>Update by ID</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Locating the record</td></tr>
+              <tr><td>Partial update</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Single predicate pass</td></tr>
+              <tr><td>Delete by ID</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Search + left-shift of tail</td></tr>
+              <tr><td>Bulk delete</td><td><span class="tag a">O(n&middot;k)</span></td><td>O(1)</td><td>k deletions each shifting the tail</td></tr>
+              <tr><td>Filter</td><td><span class="tag a">O(n)</span></td><td>O(1)</td><td>Compound predicate per record</td></tr>
+              <tr><td>Summary reports</td><td><span class="tag a">O(n)</span> &ndash; <span class="tag r">O(n&sup2;)</span></td><td>O(1)</td><td>Brand distribution is quadratic</td></tr>
+              <tr><td>Billing</td><td><span class="tag g">O(n)</span></td><td>O(1)</td><td>Lookup + constant-time tiers</td></tr>
+              <tr><td>Undo</td><td><span class="tag g">O(n)</span></td><td>O(1)</td><td>Right-shift on delete-restore</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout info" style="margin-top:20px">
+          <div class="ci">&#128200;</div>
+          <div><b>Scalability outlook</b><p>At <code class="inl">MAX = 100</code> every operation completes in microseconds &mdash; linear scans are entirely appropriate. If the cap were raised to 10&#8309;+, an ID hash map would turn search/lookup into O(1) and a linked structure would remove shift costs on deletion.</p></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 19 TESTING ============ -->
+      <section id="testing">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 19</div>
+          <h2>Test Scenarios</h2>
+          <p>Manual verification checklist covering happy paths, boundary values and failure modes.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Scenario</th><th>Steps</th><th>Expected Result</th></tr></thead>
+            <tbody>
+              <tr><td>T01</td><td>Happy-path insert</td><td>Add a Car with valid values</td><td><span class="tag g">PASS</span> Confirmation shown, ID assigned</td></tr>
+              <tr><td>T02</td><td>Duplicate-free IDs</td><td>Add 5 vehicles sequentially</td><td><span class="tag g">PASS</span> IDs V001&ndash;V005, no repeats</td></tr>
+              <tr><td>T03</td><td>Year below 1999</td><td>Enter year 1998</td><td><span class="tag g">PASS</span> Abort, count unchanged</td></tr>
+              <tr><td>T04</td><td>Engine range retry</td><td>Enter 5000 cc for a Car twice</td><td><span class="tag g">PASS</span> Two retries then abort</td></tr>
+              <tr><td>T05</td><td>Empty store guard</td><td>Run Show/Search/Update/Delete with 0 records</td><td><span class="tag g">PASS</span> "No vehicles available."</td></tr>
+              <tr><td>T06</td><td>Case-insensitive search</td><td>Search model <code class="inl">"corolla"</code> vs stored <code class="inl">"Corolla"</code></td><td><span class="tag g">PASS</span> Match found</td></tr>
+              <tr><td>T07</td><td>Partial substring search</td><td>Search model <code class="inl">"roll"</code></td><td><span class="tag g">PASS</span> "Corolla" returned</td></tr>
+              <tr><td>T08</td><td>Not-found handling</td><td>Update / bill ID <code class="inl">V999</code></td><td><span class="tag g">PASS</span> "not found" message</td></tr>
+              <tr><td>T09</td><td>Array compaction</td><td>Delete the first of 3 records, then Show</td><td><span class="tag g">PASS</span> 2 records, no gaps</td></tr>
+              <tr><td>T10</td><td>Bulk delete by brand</td><td><code class="inl">delete brand Toyota</code> with 3 Toyotas</td><td><span class="tag g">PASS</span> "3 vehicle(s) deleted"</td></tr>
+              <tr><td>T11</td><td>Undo add</td><td>Add then press 9</td><td><span class="tag g">PASS</span> Record removed, count &minus;1</td></tr>
+              <tr><td>T12</td><td>Undo delete</td><td>Delete then press 9</td><td><span class="tag g">PASS</span> Record restored at original index</td></tr>
+              <tr><td>T13</td><td>Double undo</td><td>Press 9 twice in a row</td><td><span class="tag g">PASS</span> Second reports nothing to undo</td></tr>
+              <tr><td>T14</td><td>Non-numeric menu input</td><td>Type <code class="inl">abc</code> at the main prompt</td><td><span class="tag g">PASS</span> Flush, re-prompt, no crash</td></tr>
+              <tr><td>T15</td><td>Billing age surcharge</td><td>Bill a 2019 Car (&gt;1600 cc)</td><td><span class="tag g">PASS</span> 2500 + 200 = 2700 TK</td></tr>
+              <tr><td>T16</td><td>EV billing tier</td><td>Bill an EV with 9000 kWh, 7 h charge</td><td><span class="tag g">PASS</span> 800+1500+300 = 2600 TK</td></tr>
+              <tr><td>T17</td><td>Invalid menu choice</td><td>Enter 42 at the main prompt</td><td><span class="tag g">PASS</span> "Invalid choice!" loop continues</td></tr>
+              <tr><td>T18</td><td>Invalid delete syntax</td><td>Type <code class="inl">remove V001</code></td><td><span class="tag g">PASS</span> "Invalid command."</td></tr>
+              <tr><td>T19</td><td>Clone a vehicle</td><td>Add &rarr; 2 &rarr; enter an existing ID</td><td><span class="tag g">PASS</span> New ID, identical payload</td></tr>
+              <tr><td>T20</td><td>Capacity boundary</td><td>Add 100 vehicles then a 101st</td><td><span class="tag r">KNOWN</span> Out-of-bounds write (&#167;20)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn" style="margin-top:20px">
+          <div class="ci">&#129514;</div>
+          <div><b>Automation opportunity</b><p>The suite above is currently executed manually. Because every module only touches global state, a lightweight <code class="inl">assert</code>-based harness that includes the modules directly could automate regression testing &mdash; see roadmap item R4.</p></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 20 LIMITATIONS ============ -->
+      <section id="limits">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 20</div>
+          <h2>Limitations &amp; Known Issues</h2>
+          <p>Honest assessment of the current implementation. Nothing here is hidden &mdash; each item has a matching roadmap entry.</p>
+        </div>
+
+        <div class="grid g2">
+          <div class="card">
+            <h4>&#128308; High Impact</h4>
+            <ul class="list">
+              <li><b>No capacity guard on add.</b> Once <code class="inl">count</code> reaches 100, further inserts write past the array &mdash; a buffer overflow. Needs an <code class="inl">if (count &gt;= MAX)</code> check.</li>
+              <li><b>No persistence.</b> All data vanishes on exit; there is no file or database backing store.</li>
+              <li><b>Unbounded string scans.</b> <code class="inl">scanf(" %[^\n]", &hellip;)</code> on a 20-byte field with longer input overflows the buffer.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>&#128992; Medium Impact</h4>
+            <ul class="list">
+              <li><b>Partial-update undo is partial.</b> Only the last matched record is restored (&#167;15).</li>
+              <li><b>Undo depth of one.</b> No operation history stack.</li>
+              <li><b>Bulk delete undo is lossy.</b> <code class="inl">undoVehicle</code> retains only the final removed record.</li>
+              <li><b>Hard-coded billing year.</b> <code class="inl">currentYear = 2026</code> must be updated manually each year.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>&#128993; Low Impact</h4>
+            <ul class="list">
+              <li><b>No sorting module.</b> Sorting by year, brand or capacity is specified but not implemented.</li>
+              <li><b>No duplicate detection</b> across model/brand/year attributes.</li>
+              <li><b>Brand report is O(n&sup2;)</b> due to nested rescans.</li>
+              <li><b>Update choice 8</b> places its invalid-choice <code class="inl">else</code> after the EV branch, so it is unreachable.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>&#128309; Documentation Gaps</h4>
+            <ul class="list">
+              <li>Some spec ranges in <code class="inl">details.md</code> differ from the code (e.g. Bus engine 1500&ndash;35000 specified vs 1500&ndash;3500 implemented, Bike 80&ndash;2000 vs 80&ndash;200). <b>The code is the source of truth</b> in this document.</li>
+              <li>EV billing formula in the spec differs from the shipped implementation; &#167;14 documents the shipped version.</li>
+              <li>Dynamic array expansion (spec &#167;4.8) is not implemented.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 21 ROADMAP ============ -->
+      <section id="roadmap">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 21</div>
+          <h2>Roadmap</h2>
+          <p>Planned improvements, prioritised by risk reduction first.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Enhancement</th><th>Priority</th><th>Addresses</th></tr></thead>
+            <tbody>
+              <tr><td>R1</td><td>Add <code class="inl">if (count &gt;= MAX)</code> capacity guard with dynamic growth</td><td><span class="tag r">Critical</span></td><td>Buffer overflow on 101st insert</td></tr>
+              <tr><td>R2</td><td>Width-limited scans (<code class="inl">%49s</code>) or <code class="inl">fgets()</code> everywhere</td><td><span class="tag r">Critical</span></td><td>String buffer overflow</td></tr>
+              <tr><td>R3</td><td>File-based persistence (save / load)</td><td><span class="tag a">High</span></td><td>No persistence</td></tr>
+              <tr><td>R4</td><td>Assertion-based unit test harness</td><td><span class="tag a">High</span></td><td>Manual testing only</td></tr>
+              <tr><td>R5</td><td>Undo history stack (unlimited depth)</td><td><span class="tag a">High</span></td><td>Depth = 1, lossy bulk undo</td></tr>
+              <tr><td>R6</td><td>Sort module: year, brand, capacity (+ tie-break)</td><td><span class="tag">Medium</span></td><td>Spec &#167;4.2 unimplemented</td></tr>
+              <tr><td>R7</td><td>Duplicate detection across attributes</td><td><span class="tag">Medium</span></td><td>Spec &#167;4.3 unimplemented</td></tr>
+              <tr><td>R8</td><td>Universal full-text search across every field</td><td><span class="tag">Medium</span></td><td>Spec &#167;4.12 unimplemented</td></tr>
+              <tr><td>R9</td><td>Refactor <code class="inl">currentYear</code> to <code class="inl">time(NULL)</code></td><td><span class="tag">Medium</span></td><td>Hard-coded 2026</td></tr>
+              <tr><td>R10</td><td>Introduce helper functions to remove print duplication</td><td><span class="tag p">Low</span></td><td>Repeated record renderers</td></tr>
+              <tr><td>R11</td><td>Makefile / build script for one-command builds</td><td><span class="tag p">Low</span></td><td>Manual gcc invocation</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- ============ 22 CONTRIBUTING ============ -->
+      <section id="contributing">
+        <div class="sec-head">
+          <div class="sec-kicker">Section 22</div>
+          <h2>Contributing &amp; Coding Conventions</h2>
+          <p>Guidelines for extending the codebase without breaking its structure.</p>
+        </div>
+
+        <div class="grid g2">
+          <div class="card">
+            <h3>&#128208; Style Conventions</h3>
+            <ul class="list">
+              <li><b>K&amp;R braces</b> &mdash; opening brace on the same line as the statement.</li>
+              <li><b>snake_case</b> for functions (<code class="inl">addVehicle</code>) and variables (<code class="inl">vehicleCounter</code>); <b>PascalCase</b> for the <code class="inl">Vehicle</code> struct.</li>
+              <li><b>All caps</b> for macros (<code class="inl">MAX</code>, <code class="inl">UNDO_ADD</code>).</li>
+              <li>Every module includes <code class="inl">"vehicle.h"</code> &mdash; never redeclare prototypes.</li>
+              <li>Guard all new globals with <code class="inl">extern</code> in the header, define them in exactly one <code class="inl">.c</code> file.</li>
+              <li>User-facing messages are sentence case; menu banners use centred caps.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>&#129529; Adding a New Feature</h3>
+            <div class="flow" style="margin-top:12px">
+              <div class="step"><span class="n">1</span> Create <code class="inl">src/feature.c</code></div><span class="arrow">&rarr;</span>
+              <div class="step"><span class="n">2</span> Declare in <code class="inl">vehicle.h</code></div><span class="arrow">&rarr;</span>
+              <div class="step"><span class="n">3</span> Add menu entry</div><span class="arrow">&rarr;</span>
+              <div class="step"><span class="n">4</span> Add <code class="inl">case</code></div><span class="arrow">&rarr;</span>
+              <div class="step"><span class="n">5</span> Rebuild</div>
+            </div>
+            <div class="code-head" style="margin-top:18px"><span>Build after any change</span><button class="copy">Copy</button></div>
+<pre><code>gcc -std=c99 -Wall -Wextra src/*.c -o vehicle</code></pre>
+            <p class="muted" style="margin-top:12px">The wildcard <code class="inl">*.c</code> picks up new files automatically &mdash; no build-file edits required.</p>
+          </div>
+        </div>
+
+        <div class="callout ok" style="margin-top:20px">
+          <div class="ci">&#10004;</div>
+          <div><b>Definition of done</b><p>A change is complete when it compiles warning-free with <code class="inl">-Wall -Wextra</code>, passes the relevant rows of the &#167;19 checklist, and updates this document.</p></div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom:14px">
+            <div class="logo">V</div>
+            <div>Vehicle Management System<small>Official Documentation</small></div>
+          </div>
+          <p style="max-width:420px">A menu-driven console application written in pure C. Modular, dependency-free and built as a practical demonstration of structured programming, manual record handling and validation design.</p>
+          <div class="badges" style="margin-top:16px">
+            <span class="badge">v1.0</span>
+            <span class="badge b-green">Build Passing</span>
+            <span class="badge b-primary">C99</span>
+          </div>
+        </div>
+        <div>
+          <h6>Documentation</h6>
+          <a href="#overview">Overview</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#data-model">Data Model</a>
+          <a href="#billing">Billing Engine</a>
+          <a href="#session">Sample Session</a>
+        </div>
+        <div>
+          <h6>Project</h6>
+          <a href="#quickstart">Quick Start</a>
+          <a href="#modules">Module Reference</a>
+          <a href="#testing">Test Scenarios</a>
+          <a href="#limits">Known Limitations</a>
+          <a href="#roadmap">Roadmap</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Vehicle Management System &middot; Documentation generated from source analysis</span>
+
+      </div>
+    </footer>
+  </main>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top">&uarr;</button>
+
+<script>
+(function(){
+  var root=document.documentElement;
+
+  /* ---- theme ---- */
+  var saved=localStorage.getItem('vms-theme');
+  if(saved) root.setAttribute('data-theme',saved);
+  document.getElementById('theme').addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    localStorage.setItem('vms-theme',next);
+  });
+
+  /* ---- mobile nav ---- */
+  var sb=document.getElementById('sidebar'),ovl=document.getElementById('ovl');
+  function closeNav(){sb.classList.remove('open');ovl.classList.remove('on');}
+  document.getElementById('ham').addEventListener('click',function(){
+    sb.classList.toggle('open');ovl.classList.toggle('on');
+  });
+  ovl.addEventListener('click',closeNav);
+
+  /* ---- active link on scroll ---- */
+  var links=[].slice.call(document.querySelectorAll('.nav-link'));
+  var sections=links.map(function(l){return document.querySelector(l.getAttribute('href'));}).filter(Boolean);
+  function onScroll(){
+    var pos=window.scrollY+140,cur=null;
+    sections.forEach(function(s){ if(s.offsetTop<=pos) cur=s.id; });
+    links.forEach(function(l){
+      l.classList.toggle('active', l.getAttribute('href')==='#'+cur);
+    });
+    document.getElementById('toTop').classList.toggle('show',window.scrollY>500);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  links.forEach(function(l){ l.addEventListener('click',closeNav); });
+
+  /* ---- tabs ---- */
+  document.querySelectorAll('.tabs').forEach(function(group){
+    var btns=[].slice.call(group.querySelectorAll('.tab'));
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on');
+        var scope=group.nextElementSibling;
+        var panels=[];
+        var el=scope;
+        while(el && el.classList.contains('panel')){panels.push(el);el=el.nextElementSibling;}
+        panels.forEach(function(p){p.classList.remove('on');});
+        var t=document.getElementById(b.dataset.tab);
+        if(t) t.classList.add('on');
+      });
+    });
+  });
+
+  /* ---- copy buttons ---- */
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pre=btn.closest('.code-head').nextElementSibling;
+      var text=pre.innerText;
+      var done=function(){var o=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=o;},1400);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done,done);
+      }else{
+        var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);
+        ta.select();try{document.execCommand('copy');}catch(e){}
+        document.body.removeChild(ta);done();
+      }
+    });
+  });
+
+  /* ---- back to top ---- */
+  document.getElementById('toTop').addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>
+
+
+
